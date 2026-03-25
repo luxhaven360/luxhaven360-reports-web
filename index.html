@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports — LuxHaven360</title>
+  <meta name="description" content="Segnala un problema al team LuxHaven360" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --gold:       #C9A96E;
+      --gold-light: #E8D5A3;
+      --gold-dim:   rgba(201,169,110,0.15);
+      --bg:         #0A0A0F;
+      --bg-card:    #0F0F17;
+      --bg-border:  rgba(201,169,110,0.12);
+      --text:       #E8E2D9;
+      --text-dim:   rgba(232,226,217,0.45);
+      --green:      #4CAF7D;
+      --yellow:     #E8B84B;
+      --red:        #D95B5B;
+      --blue:       #5B9BD9;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Jost', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font-sans); font-weight: 300;
+      min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--bg-border);
+      background: rgba(10,10,15,0.88); backdrop-filter: blur(20px);
+      padding: 0 clamp(1.5rem,5vw,4rem);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-mark { width:32px;height:32px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center; }
+    .brand-mark svg { width:16px;height:16px;fill:var(--gold); }
+    .brand-name { font-family:var(--font-serif);font-size:1.1rem;font-weight:400;letter-spacing:0.12em;color:var(--text);text-transform:uppercase; }
+    .header-nav { display:flex;gap:2rem;align-items:center; }
+    .header-nav a { font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s; }
+    .header-nav a:hover, .header-nav a.active { color:var(--gold); }
+
+    /* ── MAIN ── */
+    main { max-width:1100px;margin:0 auto;padding:clamp(2rem,6vw,5rem) clamp(1.5rem,5vw,4rem);position:relative;z-index:1; }
+
+    /* ── PAGE HERO ── */
+    .page-hero { border-bottom:1px solid var(--bg-border);padding-bottom:3rem;margin-bottom:3rem; }
+    .eyebrow { font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem; }
+    .page-title { font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:300;line-height:1.1;margin-bottom:0.75rem; }
+    .page-title em { font-style:italic;color:var(--gold); }
+    .page-desc { font-size:0.82rem;color:var(--text-dim);letter-spacing:0.03em;max-width:520px;line-height:1.7; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 0; border: 1px solid var(--bg-border);
+      width: fit-content; margin-bottom: 3rem;
+    }
+    .tab-btn {
+      padding: 0.65rem 1.5rem; background: transparent; border: none;
+      font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+      border-right: 1px solid var(--bg-border); position: relative;
+    }
+    .tab-btn:last-child { border-right: none; }
+    .tab-btn.active { background: var(--gold-dim); color: var(--gold); }
+    .tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.03); }
+    /* Team tab badge */
+    .tab-btn .tab-badge {
+      position: absolute; top: 4px; right: 4px;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold); opacity: 0.7;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── FORM ── */
+    .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
+    @media (max-width:620px) { .form-grid { grid-template-columns:1fr; } }
+    .form-field { display:flex;flex-direction:column;gap:0.5rem; }
+    .form-field.full { grid-column:1/-1; }
+    label { font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold); }
+
+    input, select, textarea {
+      background: var(--bg-card); border: 1px solid var(--bg-border);
+      color: var(--text); font-family: var(--font-sans); font-size: 0.85rem;
+      font-weight: 300; padding: 0.85rem 1rem; outline: none; width: 100%;
+      transition: border-color 0.2s; -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: rgba(201,169,110,0.5); }
+    input.error, select.error, textarea.error { border-color: rgba(217,91,91,0.5); }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(201,169,110,0.6)'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+    }
+    select option { background: #141420; }
+    .form-hint { font-size:0.68rem;color:var(--text-dim);letter-spacing:0.03em; }
+    .field-error { font-size:0.68rem;color:var(--red);letter-spacing:0.03em; }
+
+    /* ── CHAR COUNTER ── */
+    .field-footer { display:flex;justify-content:space-between;align-items:center;margin-top:0; }
+    .char-counter { font-size:0.65rem;color:var(--text-dim);letter-spacing:0.04em;font-variant-numeric:tabular-nums; }
+    .char-counter.warn { color:var(--yellow); }
+    .char-counter.over { color:var(--red); }
+
+    /* ── SEVERITY PILLS ── */
+    .severity-group { display:flex;gap:0.5rem;flex-wrap:wrap; }
+    .severity-pill {
+      padding: 0.5rem 1rem; border: 1px solid var(--bg-border); background: transparent;
+      cursor: pointer; font-family: var(--font-sans); font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); transition: all 0.2s;
+    }
+    .severity-pill:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
+    .severity-pill.selected { border-color:var(--gold);color:var(--gold);background:var(--gold-dim); }
+    .severity-pill[data-value="critical"].selected { border-color:var(--red);color:var(--red);background:rgba(217,91,91,0.08); }
+    .severity-pill[data-value="high"].selected    { border-color:var(--yellow);color:var(--yellow);background:rgba(232,184,75,0.08); }
+
+    /* ── HONEYPOT (invisible) ── */
+    .hp-field { display:none !important; }
+
+    /* ── SUBMIT BUTTON ── */
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem;
+      background: transparent; border: 1px solid var(--gold); color: var(--gold);
+      font-family: var(--font-sans); font-size: 0.72rem; letter-spacing: 0.16em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.25s; margin-top: 0.5rem;
+    }
+    .btn-submit:hover { background: var(--gold-dim); }
+    .btn-submit:disabled { opacity:0.5;cursor:not-allowed; }
+    .btn-arrow { font-size:1rem;transition:transform 0.2s; }
+    .btn-submit:hover .btn-arrow { transform:translateX(4px); }
+    .btn-spinner {
+      width: 14px; height: 14px; border: 1.5px solid rgba(201,169,110,0.3);
+      border-top-color: var(--gold); border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    .btn-submit.loading .btn-spinner { display: block; }
+    .btn-submit.loading .btn-arrow { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FORM STATES ── */
+    .form-error {
+      display:none; padding:1rem 1.25rem;
+      border:1px solid rgba(217,91,91,0.25); background:rgba(217,91,91,0.05);
+      font-size:0.78rem;color:#e88;margin-bottom:1.25rem;
+    }
+    .form-error.show { display:block; }
+
+    .form-success { display:none;text-align:center;padding:3rem;border:1px solid rgba(76,175,125,0.2);background:rgba(76,175,125,0.04); }
+    .form-success.show { display:block; }
+    .success-icon { width:56px;height:56px;border:1px solid rgba(76,175,125,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem; }
+    .success-icon svg { width:24px;height:24px;fill:var(--green); }
+    .success-title { font-family:var(--font-serif);font-size:1.8rem;font-weight:300;margin-bottom:0.75rem; }
+    .success-text { font-size:0.82rem;color:var(--text-dim);line-height:1.7; }
+    .success-issue-number { font-family:var(--font-serif);font-size:1.1rem;color:var(--gold);margin:0.75rem 0; }
+    .success-link { color:var(--gold);cursor:pointer;text-decoration:underline; }
+
+    /* ── SECTION TITLES ── */
+    .section-header { display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem; }
+    .section-title  { font-family:var(--font-serif);font-size:1.4rem;font-weight:400; }
+    .section-tag    { font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim); }
+
+    /* ── PUBLIC STATS ── */
+    .mini-stats-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--bg-border);
+      border: 1px solid var(--bg-border); margin-bottom: 2rem;
+    }
+    @media (max-width:580px) { .mini-stats-grid { grid-template-columns: repeat(2,1fr); } }
+    .mini-stat-card { background: var(--bg-card); padding: 1.25rem; text-align: center; }
+    .mini-stat-value { font-family:var(--font-serif);font-size:1.8rem;font-weight:300;color:var(--gold);display:block;margin-bottom:0.25rem; }
+    .mini-stat-label { font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim); }
+
+    .charts-grid-pub { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem; }
+    @media (max-width:680px) { .charts-grid-pub { grid-template-columns:1fr; } }
+    .chart-card { background:var(--bg-card);border:1px solid var(--bg-border);padding:1.5rem; }
+    .chart-title { font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem; }
+    .chart-wrap  { position:relative;height:180px; }
+
+    /* ── TEAM DASHBOARD ── */
+    .stats-grid {
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:1px;background:var(--bg-border);border:1px solid var(--bg-border);margin-bottom:2.5rem;
+    }
+    @media (max-width:620px) { .stats-grid { grid-template-columns:repeat(2,1fr); } }
+    .stat-card { background:var(--bg-card);padding:1.5rem;text-align:center; }
+    .stat-value { font-family:var(--font-serif);font-size:2.2rem;font-weight:300;color:var(--gold);display:block;margin-bottom:0.4rem; }
+    .stat-label { font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim); }
+
+    .charts-grid-dash { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem; }
+    @media (max-width:680px) { .charts-grid-dash { grid-template-columns:1fr; } }
+
+    /* ── ISSUES TABLE ── */
+    .issues-table { width:100%;border-collapse:collapse; }
+    .issues-table th { font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);padding:0.75rem 1rem;text-align:left;border-bottom:1px solid var(--bg-border);font-weight:400; }
+    .issues-table td { padding:1rem;font-size:0.78rem;color:var(--text-dim);border-bottom:1px solid rgba(201,169,110,0.05);vertical-align:top; }
+    .issues-table tr:hover td { background:rgba(201,169,110,0.03);color:var(--text); }
+    .issue-title { color:var(--text);font-size:0.82rem;margin-bottom:3px; }
+
+    .label-badge { display:inline-block;font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border:1px solid;margin-right:4px; }
+    .status-badge { display:inline-flex;align-items:center;gap:5px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border:1px solid; }
+    .issue-open    { color:var(--yellow);border-color:rgba(232,184,75,0.3); }
+    .issue-wip     { color:var(--blue);  border-color:rgba(91,155,217,0.3); }
+    .issue-closed  { color:var(--green); border-color:rgba(76,175,125,0.3); }
+    .cat-bug         { color:var(--red);    border-color:rgba(217,91,91,0.3); }
+    .cat-performance { color:var(--yellow); border-color:rgba(232,184,75,0.3); }
+    .cat-feature     { color:var(--blue);   border-color:rgba(91,155,217,0.3); }
+    .cat-other       { color:var(--text-dim);border-color:var(--bg-border); }
+
+    /* ── STATUS ACTIONS (team only) ── */
+    .issue-actions { display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.5rem; }
+    .action-btn {
+      padding: 0.25rem 0.7rem; font-size: 0.6rem; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; font-family: var(--font-sans);
+      background: transparent; border: 1px solid var(--bg-border); color: var(--text-dim);
+      transition: all 0.15s;
+    }
+    .action-btn:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
+    .action-btn.wip { border-color:rgba(91,155,217,0.3);color:var(--blue); }
+    .action-btn.resolve { border-color:rgba(76,175,125,0.3);color:var(--green); }
+    .action-btn.reopen { border-color:rgba(232,184,75,0.3);color:var(--yellow); }
+    .action-btn:disabled { opacity:0.4;cursor:wait; }
+
+    /* ── FILTERS & PAGINATION ── */
+    .filter-bar { display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.25rem; }
+    .filter-chip { padding:0.35rem 0.9rem;background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s; }
+    .filter-chip:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
+    .filter-chip.active { border-color:var(--gold);color:var(--gold);background:var(--gold-dim); }
+    .pagination { display:flex;gap:0.5rem;margin-top:1.5rem;justify-content:center; }
+    .page-btn { padding:0.4rem 0.85rem;background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);font-size:0.72rem;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s; }
+    .page-btn:hover, .page-btn.active { border-color:var(--gold);color:var(--gold); }
+
+    /* ── TEAM AUTH GATE ── */
+    .team-gate { text-align:center;padding:3rem;border:1px solid var(--bg-border); }
+    .team-gate-title { font-family:var(--font-serif);font-size:1.6rem;font-weight:300;margin-bottom:0.75rem; }
+    .team-gate-text  { font-size:0.8rem;color:var(--text-dim);margin-bottom:2rem; }
+    .team-input-row { display:flex;gap:0;max-width:400px;margin:0 auto; }
+    .team-input-row input { flex:1;border-right:none; }
+    .team-input-row button { padding:0.85rem 1.5rem;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:var(--font-sans);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 0.2s; }
+    .team-input-row button:hover { background:var(--gold-dim); }
+    .team-auth-error { font-size:0.72rem;color:var(--red);margin-top:0.75rem; }
+
+    /* ── LOADING ── */
+    .skeleton { background:linear-gradient(90deg,var(--bg-card) 25%,rgba(201,169,110,0.05) 50%,var(--bg-card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:2px; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .fade-in { opacity:0;transform:translateY(12px);animation:fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { to { opacity:1;transform:none; } }
+
+    /* ── FOOTER ── */
+    footer { border-top:1px solid var(--bg-border);padding:2rem clamp(1.5rem,5vw,4rem);position:relative;z-index:1; }
+    .footer-inner { max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem; }
+    .footer-text { font-size:0.68rem;letter-spacing:0.08em;color:var(--text-dim); }
+    .footer-link { color:var(--gold);text-decoration:none;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid rgba(201,169,110,0.3);padding-bottom:1px;transition:border-color 0.2s; }
+    .footer-link:hover { border-color:var(--gold); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="https://luxhaven360.com" class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 16 16"><path d="M8 1L10 6H15L11 9.5L12.5 14.5L8 11.5L3.5 14.5L5 9.5L1 6H6L8 1Z"/></svg>
+      </div>
+      <span class="brand-name">LuxHaven360</span>
+    </a>
+    <nav class="header-nav">
+      <a href="https://status.luxhaven360.com">Status</a>
+      <a href="#" class="active">Reports</a>
+    </nav>
+    <div></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero fade-in">
+    <div class="eyebrow">Centro segnalazioni</div>
+    <h1 class="page-title">Segnala un <em>problema</em></h1>
+    <p class="page-desc">
+      Hai notato qualcosa che non va? Il form qui sotto raggiunge direttamente il nostro team.
+      Ogni segnalazione viene presa in carico entro poche ore.
+    </p>
+  </section>
+
+  <!-- TABS (team tab iniettato via JS se ?team in URL) -->
+  <div class="tabs" id="tabs-container">
+    <button class="tab-btn active" data-tab="report">Invia segnalazione</button>
+    <button class="tab-btn" data-tab="stats">Statistiche</button>
+    <!-- tab team iniettato da JS -->
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 1: FORM SEGNALAZIONE
+  ══════════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-report">
+
+    <div class="form-error" id="form-error"></div>
+
+    <div id="form-wrap">
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label for="name">Il tuo nome</label>
+          <input type="text" id="name" placeholder="Nome Cognome" autocomplete="name" />
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <input type="email" id="email" placeholder="tua@email.com" autocomplete="email" />
+          <span class="form-hint">Solo se vuoi ricevere aggiornamenti sul tuo report.</span>
+        </div>
+
+        <div class="form-field full">
+          <label for="category">Categoria del problema</label>
+          <select id="category">
+            <option value="">Seleziona una categoria…</option>
+            <option value="bug">🐞 Bug / Errore del sito</option>
+            <option value="performance">⚡ Lentezza / Performance</option>
+            <option value="content">📄 Contenuto errato o mancante</option>
+            <option value="payment">💳 Problema pagamento / Prenotazione</option>
+            <option value="feature">💡 Richiesta funzionalità</option>
+            <option value="security">🔒 Problema di sicurezza</option>
+            <option value="other">🔧 Altro</option>
+          </select>
+        </div>
+
+        <div class="form-field full">
+          <label>Priorità / Impatto</label>
+          <div class="severity-group" id="severity-group">
+            <button type="button" class="severity-pill selected" data-value="low">🟢 Basso</button>
+            <button type="button" class="severity-pill" data-value="medium">🟡 Medio</button>
+            <button type="button" class="severity-pill" data-value="high">🟠 Alto</button>
+            <button type="button" class="severity-pill" data-value="critical">🔴 Critico</button>
+          </div>
+        </div>
+
+        <div class="form-field full">
+          <label for="title">Titolo del problema *</label>
+          <input type="text" id="title" placeholder="Descrivi brevemente il problema…" maxlength="200" required />
+          <div class="field-footer">
+            <span class="field-error" id="title-error"></span>
+            <span class="char-counter" id="title-counter">0 / 200</span>
+          </div>
+        </div>
+
+        <div class="form-field full">
+          <label for="description">Descrizione dettagliata *</label>
+          <textarea id="description" maxlength="3000"
+            placeholder="Descrivi cosa è successo, come riprodurre il problema, su quale pagina/sezione si è verificato…"></textarea>
+          <div class="field-footer">
+            <span class="field-error" id="desc-error"></span>
+            <span class="char-counter" id="desc-counter">0 / 3000</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="url-field">URL della pagina <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <input type="url" id="url-field" placeholder="https://luxhaven360.com/pagina" />
+        </div>
+
+        <div class="form-field">
+          <label for="browser">Browser / Dispositivo <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <input type="text" id="browser" placeholder="es. Chrome 120 · macOS" />
+          <span class="form-hint" id="auto-browser-hint"></span>
+        </div>
+
+        <!-- HONEYPOT — non compilare (bot trap) -->
+        <div class="form-field hp-field" aria-hidden="true">
+          <label for="_hp">Non compilare</label>
+          <input type="text" id="_hp" name="_hp" autocomplete="off" tabindex="-1" />
+        </div>
+
+      </div>
+
+      <div style="margin-top:2rem">
+        <button class="btn-submit" id="btn-submit" type="button">
+          <div class="btn-spinner"></div>
+          <span id="btn-text">Invia segnalazione</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="form-success" id="form-success">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+      </div>
+      <h2 class="success-title">Segnalazione ricevuta</h2>
+      <div class="success-issue-number" id="success-issue-ref">—</div>
+      <p class="success-text">
+        Grazie! Il tuo report è stato inviato con successo al team di LuxHaven360.<br>
+        Puoi verificare lo stato dei servizi su
+        <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a><br><br>
+        <span class="success-link" id="success-new-report">Invia un'altra segnalazione →</span>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 2: STATISTICHE PUBBLICHE
+  ══════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-stats">
+
+    <div class="section-header">
+      <h2 class="section-title">Statistiche pubbliche</h2>
+      <span class="section-tag" id="stats-updated">—</span>
+    </div>
+
+    <div class="mini-stats-grid" id="pub-stats-grid">
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Totale</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Aperti</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">In lavorazione</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Risolti</span></div>
+    </div>
+
+    <div class="charts-grid-pub">
+      <div class="chart-card">
+        <div class="chart-title">Segnalazioni per categoria</div>
+        <div class="chart-wrap"><canvas id="pubChartCategories"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Segnalazioni — ultimi 30 giorni</div>
+        <div class="chart-wrap"><canvas id="pubChartDaily"></canvas></div>
+      </div>
+    </div>
+
+    <p style="font-size:0.72rem;color:var(--text-dim);text-align:center;margin-top:1rem">
+      I dati mostrano segnalazioni aggregate senza informazioni personali.
+      Aggiornamento automatico ogni 5 minuti.
+    </p>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 3: DASHBOARD TEAM (solo con ?team in URL)
+  ══════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-team">
+
+    <!-- Auth gate -->
+    <div id="team-gate" class="team-gate fade-in">
+      <h2 class="team-gate-title">Accesso team</h2>
+      <p class="team-gate-text">
+        Inserisci il GitHub Personal Access Token del team per accedere alla dashboard completa.
+      </p>
+      <div class="team-input-row">
+        <input type="password" id="team-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" />
+        <button type="button" onclick="teamLogin()">Accedi</button>
+      </div>
+      <p class="team-auth-error" id="team-auth-error"></p>
+      <p style="font-size:0.65rem;color:var(--text-dim);margin-top:1.5rem;max-width:400px;margin-left:auto;margin-right:auto">
+        Il token viene salvato solo nel tuo browser (localStorage) e non è mai trasmesso ad altri.
+      </p>
+    </div>
+
+    <!-- Dashboard content -->
+    <div id="dashboard-content" style="display:none">
+
+      <div class="section-header">
+        <h2 class="section-title">Panoramica team</h2>
+        <div style="display:flex;gap:1rem;align-items:center">
+          <span class="section-tag" id="dash-updated">—</span>
+          <button type="button" onclick="refreshDashboard()" style="background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);padding:0.35rem 0.85rem;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans)">↻ Aggiorna</button>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="dash-stats">
+        <div class="stat-card"><span class="stat-value" id="s-total">—</span><span class="stat-label">Totale</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-open">—</span><span class="stat-label">Aperti</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-wip">—</span><span class="stat-label">In lavorazione</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-closed">—</span><span class="stat-label">Risolti</span></div>
+      </div>
+
+      <div class="charts-grid-dash">
+        <div class="chart-card">
+          <div class="chart-title">Per categoria</div>
+          <div class="chart-wrap"><canvas id="chartCategories"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Giornaliero — ultimi 30 giorni</div>
+          <div class="chart-wrap"><canvas id="chartDaily"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Issues table -->
+      <div class="section-header" style="margin-top:1rem">
+        <h2 class="section-title">Segnalazioni</h2>
+        <div style="display:flex;gap:0.5rem;align-items:center">
+          <input type="text" id="search-input" placeholder="Cerca…"
+            style="padding:0.4rem 0.75rem;font-size:0.72rem;min-width:0;width:180px"
+            oninput="filterAndRender()" />
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip active" data-filter="all">Tutti</button>
+        <button class="filter-chip" data-filter="open">Aperti</button>
+        <button class="filter-chip" data-filter="wip">In lavorazione</button>
+        <button class="filter-chip" data-filter="closed">Risolti</button>
+        <button class="filter-chip" data-filter="critical">Critici</button>
+      </div>
+
+      <div id="issues-wrap">
+        <table class="issues-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Segnalazione</th>
+              <th>Categoria</th>
+              <th>Priorità</th>
+              <th>Stato</th>
+              <th>Data</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody id="issues-body">
+            <tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem">Caricamento…</td></tr>
+          </tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+      <div style="text-align:right;margin-top:2rem">
+        <button type="button" onclick="teamLogout()"
+          style="background:transparent;border:none;color:var(--text-dim);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans)">
+          Disconnetti →
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-text">© 2024 LuxHaven360 · Powered by GitHub Issues + Cloudflare Workers · 100% gratuito</span>
+    <a href="https://status.luxhaven360.com" class="footer-link">← Pagina status</a>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   REPORTS PAGE v2.0 — LuxHaven360
+   · Tab team accessibile solo con ?team in URL
+   · Statistiche pubbliche: nessuna autenticazione
+   · Worker: create-issue, public-stats, update-issue
+═══════════════════════════════════════════════════════════════ */
+
+// ═══════════════════════════════════════════════════════════════
+//  !! CONFIGURA QUI !!
+// ═══════════════════════════════════════════════════════════════
+const CFG = {
+  workerUrl:   'https://reports-api.TUO-SUBDOMINIO.workers.dev', // ← cambia
+  githubOwner: 'TUO-USERNAME',                                   // ← cambia
+  githubRepo:  'luxhaven360-reports',                            // ← cambia
+  statusUrl:   'https://status.luxhaven360.com',
+  statsCacheTTL: 5 * 60 * 1000, // 5 min
+};
+// ═══════════════════════════════════════════════════════════════
+
+// ── Team mode: mostra tab solo se ?team nell'URL ──────────────
+const IS_TEAM_MODE = window.location.search.includes('team');
+if (IS_TEAM_MODE) {
+  const tabsContainer = document.getElementById('tabs-container');
+  const teamBtn = document.createElement('button');
+  teamBtn.className = 'tab-btn';
+  teamBtn.dataset.tab = 'team';
+  teamBtn.innerHTML = 'Dashboard Team <span class="tab-badge"></span>';
+  tabsContainer.appendChild(teamBtn);
+}
+
+// ── Tab switching ─────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    if (tab === 'stats') loadPublicStats();
+    if (tab === 'team')  checkTeamAuth();
+  });
+});
+
+// Carica stats se tab stats è attiva al load
+window.addEventListener('DOMContentLoaded', () => {
+  // Se tab stats visibile, precarica
+  setTimeout(loadPublicStats, 500);
+});
+
+// ── Auto-detect browser ───────────────────────────────────────
+(function detectBrowser() {
+  const ua = navigator.userAgent;
+  let name = 'Browser';
+  if (/Firefox/i.test(ua))     name = 'Firefox';
+  else if (/Edg/i.test(ua))    name = 'Edge';
+  else if (/Chrome/i.test(ua)) name = 'Chrome';
+  else if (/Safari/i.test(ua)) name = 'Safari';
+  const os = /iPhone|iPad/i.test(ua) ? 'iOS' : /Mac/i.test(ua) ? 'macOS' : /Windows/i.test(ua) ? 'Windows' : /Android/i.test(ua) ? 'Android' : 'OS';
+  const detected = `${name} · ${os}`;
+  const field = document.getElementById('browser');
+  if (field && !field.value) field.placeholder = detected;
+  const hint = document.getElementById('auto-browser-hint');
+  if (hint) hint.textContent = `Rilevato: ${detected}`;
+})();
+
+// ── Character counters ────────────────────────────────────────
+function setupCounter(fieldId, counterId, max) {
+  const field   = document.getElementById(fieldId);
+  const counter = document.getElementById(counterId);
+  if (!field || !counter) return;
+  const update = () => {
+    const len = field.value.length;
+    counter.textContent = `${len} / ${max}`;
+    counter.className = 'char-counter' + (len > max * 0.9 ? ' warn' : '') + (len >= max ? ' over' : '');
+  };
+  field.addEventListener('input', update);
+  update();
+}
+setupCounter('title', 'title-counter', 200);
+setupCounter('description', 'desc-counter', 3000);
+
+// ── Severity pills ────────────────────────────────────────────
+let selectedSeverity = 'low';
+document.querySelectorAll('.severity-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.severity-pill').forEach(p => p.classList.remove('selected'));
+    pill.classList.add('selected');
+    selectedSeverity = pill.dataset.value;
+  });
+});
+
+// ── Reset form ────────────────────────────────────────────────
+document.getElementById('success-new-report')?.addEventListener('click', () => {
+  document.getElementById('form-success').classList.remove('show');
+  document.getElementById('form-wrap').style.display = 'block';
+  ['name','email','title','description','url-field','browser'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('category').value = '';
+  document.querySelectorAll('.severity-pill').forEach(p => p.classList.remove('selected'));
+  document.querySelector('.severity-pill[data-value="low"]')?.classList.add('selected');
+  selectedSeverity = 'low';
+  setupCounter('title', 'title-counter', 200);
+  setupCounter('description', 'desc-counter', 3000);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── Form submit ───────────────────────────────────────────────
+document.getElementById('btn-submit').addEventListener('click', submitReport);
+
+async function submitReport() {
+  const btn = document.getElementById('btn-submit');
+  clearFormErrors();
+
+  const name     = document.getElementById('name').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const category = document.getElementById('category').value;
+  const title    = document.getElementById('title').value.trim();
+  const desc     = document.getElementById('description').value.trim();
+  const url      = document.getElementById('url-field').value.trim();
+  const browser  = document.getElementById('browser').value.trim() || document.getElementById('browser').placeholder;
+  const hp       = document.getElementById('_hp').value;
+
+  let valid = true;
+  if (!title) { showFieldError('title-error', 'Campo obbligatorio'); valid = false; }
+  if (!desc)  { showFieldError('desc-error',  'Campo obbligatorio'); valid = false; }
+  if (title.length > 200) { showFieldError('title-error', 'Massimo 200 caratteri'); valid = false; }
+  if (!valid) return;
+
+  const catLabels = { bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Contenuto', payment:'💳 Pagamento', feature:'💡 Funzionalità', security:'🔒 Sicurezza', other:'🔧 Altro' };
+  const sevLabels = { low:'🟢 Basso', medium:'🟡 Medio', high:'🟠 Alto', critical:'🔴 Critico' };
+
+  const issueTitle = `[${catLabels[category] || 'Report'}] ${title}`;
+  const issueBody  = `## 📋 Segnalazione\n\n**Categoria:** ${catLabels[category] || '—'}\n**Priorità:** ${sevLabels[selectedSeverity]}\n**Inviata da:** ${name || 'Anonimo'}${email ? ` (${email})` : ''}\n\n---\n\n### Descrizione\n${desc}\n${url ? `\n### URL\n${url}` : ''}\n${browser ? `\n### Browser / Dispositivo\n${browser}` : ''}\n\n---\n*Inviata il ${new Date().toLocaleString('it-IT')} tramite reports.luxhaven360.com*`;
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+  document.getElementById('btn-text').textContent = 'Invio in corso…';
+
+  try {
+    const res = await fetch(`${CFG.workerUrl}/create-issue`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        title: issueTitle, body: issueBody,
+        labels: [category || 'other', selectedSeverity],
+        _hp: hp,
+      }),
+    });
+
+    if (res.status === 429) {
+      showFormError('Troppe segnalazioni in poco tempo. Riprova tra un minuto.');
+      return;
+    }
+    if (!res.ok) throw new Error(`${res.status}`);
+
+    const data = await res.json();
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+    const refEl = document.getElementById('success-issue-ref');
+    if (data.issueNumber && !data.honeypot) {
+      refEl.textContent = `Segnalazione #${data.issueNumber}`;
+    } else {
+      refEl.style.display = 'none';
+    }
+
+  } catch (e) {
+    showFormError(`Impossibile inviare la segnalazione. (${e.message}) — Riprova tra qualche istante.`);
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    document.getElementById('btn-text').textContent = 'Invia segnalazione';
+  }
+}
+
+function showFormError(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg;
+  el.classList.add('show');
+  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+function showFieldError(id, msg) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = msg;
+}
+function clearFormErrors() {
+  document.getElementById('form-error').classList.remove('show');
+  ['title-error','desc-error'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  PUBLIC STATS
+// ═══════════════════════════════════════════════════════════════
+let pubStatsCache = null;
+let pubStatsTs    = 0;
+let pubCatChart   = null;
+let pubDayChart   = null;
+
+async function loadPublicStats() {
+  // Usa cache se fresca
+  if (pubStatsCache && (Date.now() - pubStatsTs < CFG.statsCacheTTL)) {
+    renderPublicStats(pubStatsCache);
+    return;
+  }
+
+  try {
+    // Prova prima il Worker (cached 5min server-side)
+    let stats;
+    try {
+      const r = await fetch(`${CFG.workerUrl}/public-stats`);
+      if (r.ok) stats = await r.json();
+    } catch {}
+
+    // Fallback: GitHub API diretta (solo per repo pubblici)
+    if (!stats) {
+      stats = await fetchPublicStatsFromGitHub();
+    }
+
+    if (stats) {
+      pubStatsCache = stats;
+      pubStatsTs    = Date.now();
+      renderPublicStats(stats);
+    }
+  } catch (e) {
+    document.getElementById('stats-updated').textContent = 'Errore nel caricamento dei dati';
+  }
+}
+
+async function fetchPublicStatsFromGitHub() {
+  const base = `https://api.github.com/repos/${CFG.githubOwner}/${CFG.githubRepo}`;
+  const hdrs = { Accept: 'application/vnd.github+json' };
+
+  const [openR, closedR] = await Promise.all([
+    fetch(`${base}/issues?state=open&per_page=100`, { headers: hdrs }),
+    fetch(`${base}/issues?state=closed&per_page=100`, { headers: hdrs }),
+  ]);
+  if (!openR.ok) return null;
+
+  const [openIssues, closedIssues] = await Promise.all([openR.json(), closedR.json()]);
+  const all = [...openIssues, ...closedIssues];
+
+  const byCategory = {}, byDay = {};
+  all.forEach(i => {
+    const cat = catFromLabels(i.labels?.map(l=>l.name.toLowerCase())||[]);
+    byCategory[cat] = (byCategory[cat]||0)+1;
+    const day = i.created_at?.split('T')[0];
+    if (day) byDay[day] = (byDay[day]||0)+1;
+  });
+
+  const wip = all.filter(i => i.labels?.some(l=>['wip','in-progress'].includes(l.name.toLowerCase()))).length;
+  return {
+    total: all.length,
+    open:  openIssues.filter(i=>!i.labels?.some(l=>['wip','in-progress'].includes(l.name.toLowerCase()))).length,
+    wip, resolved: closedIssues.length, byCategory, byDay,
+    lastUpdated: new Date().toISOString(),
+  };
+}
+
+function catFromLabels(labels) {
+  if (labels.includes('bug'))         return 'Bug';
+  if (labels.includes('performance')) return 'Performance';
+  if (labels.includes('content'))     return 'Contenuto';
+  if (labels.includes('payment'))     return 'Pagamento';
+  if (labels.includes('feature'))     return 'Funzionalità';
+  if (labels.includes('security'))    return 'Sicurezza';
+  return 'Altro';
+}
+
+function renderPublicStats(stats) {
+  // Mini stats
+  const grid = document.getElementById('pub-stats-grid');
+  grid.innerHTML = `
+    <div class="mini-stat-card"><span class="mini-stat-value">${stats.total}</span><span class="mini-stat-label">Totale</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--yellow)">${stats.open}</span><span class="mini-stat-label">Aperti</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--blue)">${stats.wip}</span><span class="mini-stat-label">In lavorazione</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--green)">${stats.resolved}</span><span class="mini-stat-label">Risolti</span></div>`;
+
+  const upd = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleTimeString('it-IT') : '—';
+  document.getElementById('stats-updated').textContent = `Aggiornato: ${upd}${stats.cached ? ' (cache)' : ''}`;
+
+  // Colors
+  const GOLD='#C9A96E', DIM='rgba(232,226,217,0.12)';
+  const COLORS=['#C9A96E','#D95B5B','#E8B84B','#5B9BD9','#4CAF7D','#C97BE8','#7BE8C9'];
+  const tpDefaults = {
+    backgroundColor:'#1a1a24',borderColor:'rgba(201,169,110,0.2)',borderWidth:1,
+    titleColor:GOLD,bodyColor:'rgba(232,226,217,0.7)',padding:10,
+  };
+
+  // Donut — categories
+  const cats = stats.byCategory || {};
+  if (pubCatChart) pubCatChart.destroy();
+  pubCatChart = new Chart(document.getElementById('pubChartCategories'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(cats),
+      datasets: [{ data: Object.values(cats), backgroundColor: COLORS, borderWidth: 0 }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:{ ...tpDefaults } },
+    },
+  });
+
+  // Bar — daily last 30
+  const last30 = Array.from({ length:30 }, (_,i) => {
+    const d = new Date(); d.setDate(d.getDate() - (29-i));
+    return d.toISOString().split('T')[0];
+  });
+  const dailyCounts = last30.map(day => (stats.byDay || {})[day] || 0);
+
+  if (pubDayChart) pubDayChart.destroy();
+  pubDayChart = new Chart(document.getElementById('pubChartDaily'), {
+    type: 'bar',
+    data: {
+      labels: last30.map(d => d.slice(5)),
+      datasets:[{ data:dailyCounts, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }],
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{...tpDefaults} },
+      scales:{
+        x:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9}, maxTicksLimit:7 }, grid:{color:DIM} },
+        y:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9} }, grid:{color:DIM} },
+      },
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TEAM AUTH
+// ═══════════════════════════════════════════════════════════════
+function checkTeamAuth() {
+  const token = localStorage.getItem('lh360_team_token');
+  if (token) showDashboard(token);
+}
+
+function teamLogin() {
+  const token = document.getElementById('team-token').value.trim();
+  if (!token || !token.startsWith('gh')) {
+    document.getElementById('team-auth-error').textContent = 'Token non valido. Deve iniziare con "ghp_" o "github_pat_".';
+    return;
+  }
+  localStorage.setItem('lh360_team_token', token);
+  showDashboard(token);
+}
+
+function teamLogout() {
+  localStorage.removeItem('lh360_team_token');
+  allIssues = [];
+  document.getElementById('team-gate').style.display = 'block';
+  document.getElementById('dashboard-content').style.display = 'none';
+  document.getElementById('team-token').value = '';
+}
+
+function showDashboard(token) {
+  document.getElementById('team-gate').style.display = 'none';
+  document.getElementById('dashboard-content').style.display = 'block';
+  loadDashboardData(token);
+}
+
+function refreshDashboard() {
+  const t = localStorage.getItem('lh360_team_token');
+  if (t) loadDashboardData(t);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  TEAM DASHBOARD DATA
+// ═══════════════════════════════════════════════════════════════
+let allIssues    = [];
+let activeFilter = 'all';
+let searchQuery  = '';
+let currentPage  = 1;
+const perPage    = 15;
+let catChartInst = null;
+let dayChartInst = null;
+
+async function loadDashboardData(token) {
+  const t = token || localStorage.getItem('lh360_team_token');
+  if (!t) return;
+
+  try {
+    const [openR, closedR] = await Promise.all([
+      githubFetch(`issues?state=open&per_page=100`, t),
+      githubFetch(`issues?state=closed&per_page=100`, t),
+    ]);
+    allIssues = [...openR, ...closedR].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+    renderDashStats(allIssues);
+    renderDashCharts(allIssues);
+    filterAndRender();
+    document.getElementById('dash-updated').textContent = `Aggiornato: ${new Date().toLocaleTimeString('it-IT')}`;
+
+  } catch (e) {
+    if (e.message.includes('401') || e.message.includes('403')) {
+      document.getElementById('dashboard-content').style.display = 'none';
+      document.getElementById('team-gate').style.display = 'block';
+      document.getElementById('team-auth-error').textContent = 'Token non valido o scaduto.';
+      localStorage.removeItem('lh360_team_token');
+    } else {
+      document.getElementById('dash-updated').textContent = `Errore: ${e.message}`;
+    }
+  }
+}
+
+async function githubFetch(path, token) {
+  const r = await fetch(
+    `https://api.github.com/repos/${CFG.githubOwner}/${CFG.githubRepo}/${path}`,
+    { headers: { Authorization:`token ${token}`, Accept:'application/vnd.github+json' } }
+  );
+  if (!r.ok) throw new Error(r.status.toString());
+  return r.json();
+}
+
+function renderDashStats(issues) {
+  const open   = issues.filter(i => i.state==='open' && !hasLabel(i,'wip') && !hasLabel(i,'in-progress')).length;
+  const wip    = issues.filter(i => hasLabel(i,'wip') || hasLabel(i,'in-progress')).length;
+  const closed = issues.filter(i => i.state==='closed').length;
+  animateVal('s-total', issues.length);
+  animateVal('s-open', open);
+  animateVal('s-wip', wip);
+  animateVal('s-closed', closed);
+}
+
+function animateVal(id, target) {
+  const el = document.getElementById(id);
+  let cur = parseInt(el.textContent) || 0;
+  const step = Math.max(1, Math.ceil(Math.abs(target - cur) / 20));
+  const iv = setInterval(() => {
+    cur = cur < target ? Math.min(cur+step, target) : Math.max(cur-step, target);
+    el.textContent = cur;
+    if (cur === target) clearInterval(iv);
+  }, 25);
+}
+
+function renderDashCharts(issues) {
+  const GOLD='#C9A96E', DIM='rgba(232,226,217,0.12)';
+  const COLORS=['#C9A96E','#D95B5B','#E8B84B','#5B9BD9','#4CAF7D','#C97BE8','#7BE8C9'];
+  const tp = { backgroundColor:'#1a1a24', borderColor:'rgba(201,169,110,0.2)', borderWidth:1, titleColor:GOLD, bodyColor:'rgba(232,226,217,0.7)', padding:10 };
+
+  const catMap = {};
+  issues.forEach(i => { const c = catFromLabels(i.labels?.map(l=>l.name.toLowerCase())||[]); catMap[c]=(catMap[c]||0)+1; });
+
+  if (catChartInst) catChartInst.destroy();
+  catChartInst = new Chart(document.getElementById('chartCategories'), {
+    type: 'doughnut',
+    data: { labels:Object.keys(catMap), datasets:[{ data:Object.values(catMap), backgroundColor:COLORS, borderWidth:0 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:tp } },
+  });
+
+  const last30 = Array.from({length:30},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(29-i)); return d.toISOString().split('T')[0]; });
+  const daily  = last30.map(day => issues.filter(i => i.created_at?.startsWith(day)).length);
+
+  if (dayChartInst) dayChartInst.destroy();
+  dayChartInst = new Chart(document.getElementById('chartDaily'), {
+    type: 'bar',
+    data: { labels:last30.map(d=>d.slice(5)), datasets:[{ data:daily, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:tp }, scales:{ x:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9},maxTicksLimit:7},grid:{color:DIM}}, y:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9}},grid:{color:DIM}} } },
+  });
+}
+
+// Filters
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    currentPage  = 1;
+    filterAndRender();
+  });
+});
+
+function filterAndRender() {
+  searchQuery = document.getElementById('search-input')?.value.toLowerCase() || '';
+  currentPage = 1;
+  renderIssues(1);
+}
+
+function renderIssues(page) {
+  currentPage = page;
+  let filtered = [...allIssues];
+
+  if (activeFilter === 'open')     filtered = filtered.filter(i => i.state==='open' && !hasLabel(i,'wip') && !hasLabel(i,'in-progress'));
+  if (activeFilter === 'wip')      filtered = filtered.filter(i => hasLabel(i,'wip') || hasLabel(i,'in-progress'));
+  if (activeFilter === 'closed')   filtered = filtered.filter(i => i.state==='closed');
+  if (activeFilter === 'critical') filtered = filtered.filter(i => hasLabel(i,'critical'));
+
+  if (searchQuery) {
+    filtered = filtered.filter(i => i.title?.toLowerCase().includes(searchQuery) || i.body?.toLowerCase().includes(searchQuery));
+  }
+
+  const total  = filtered.length;
+  const pages  = Math.ceil(total / perPage);
+  const sliced = filtered.slice((page-1)*perPage, page*perPage);
+
+  const tbody = document.getElementById('issues-body');
+  if (!sliced.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem">Nessuna segnalazione trovata.</td></tr>`;
+  } else {
+    tbody.innerHTML = sliced.map(issue => {
+      const cat   = catFromLabels(issue.labels?.map(l=>l.name.toLowerCase())||[]);
+      const catKey = getCatKey(issue);
+      const state = getState(issue);
+      const isOpen = issue.state === 'open';
+      const isWip  = hasLabel(issue,'wip') || hasLabel(issue,'in-progress');
+
+      const actions = `
+        <div class="issue-actions">
+          ${!isWip && isOpen
+            ? `<button class="action-btn wip" onclick="updateStatus(${issue.number}, 'wip', this)">⚙ In lavorazione</button>` : ''}
+          ${isOpen
+            ? `<button class="action-btn resolve" onclick="updateStatus(${issue.number}, 'close', this)">✓ Risolvi</button>` : ''}
+          ${!isOpen
+            ? `<button class="action-btn reopen" onclick="updateStatus(${issue.number}, 'open', this)">↩ Riapri</button>` : ''}
+        </div>`;
+
+      return `
+        <tr id="row-${issue.number}">
+          <td><a href="${issue.html_url}" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none">#${issue.number}</a></td>
+          <td>
+            <div class="issue-title">${escHtml(issue.title)}</div>
+            <div style="font-size:0.68rem;color:var(--text-dim);margin-top:3px">${issue.user?.login ? '@'+issue.user.login : ''}</div>
+          </td>
+          <td><span class="label-badge cat-${catKey}">${cat}</span></td>
+          <td>${getPriorityBadge(issue)}</td>
+          <td><span class="status-badge ${state.cls}">${state.label}</span></td>
+          <td style="white-space:nowrap;font-size:0.72rem">${fmtShort(issue.created_at)}</td>
+          <td>${actions}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  // Pagination
+  const pag = document.getElementById('pagination');
+  if (pages <= 1) { pag.innerHTML=''; return; }
+  pag.innerHTML = Array.from({length:pages},(_,i)=>i+1).map(n =>
+    `<button class="page-btn ${n===page?'active':''}" onclick="renderIssues(${n})">${n}</button>`
+  ).join('');
+}
+
+// ── Status updates ────────────────────────────────────────────
+async function updateStatus(issueNumber, action, btn) {
+  const token = localStorage.getItem('lh360_team_token');
+  if (!token) return;
+
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = '…';
+
+  try {
+    let body = { issueNumber, action, teamToken: token };
+
+    // Se azione wip → aggiunge label 'wip' senza chiudere
+    if (action === 'wip') {
+      const issue = allIssues.find(i => i.number === issueNumber);
+      const existingLabels = issue?.labels?.map(l => l.name) || [];
+      body = { issueNumber, action: 'label', labels: [...existingLabels.filter(l=>l!=='wip'), 'wip'], teamToken: token };
+    }
+
+    const res = await fetch(`${CFG.workerUrl}/update-issue`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      // Reload dashboard
+      await loadDashboardData(token);
+    } else {
+      const err = await res.json();
+      alert(`Errore: ${err.error}`);
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  } catch (e) {
+    alert(`Errore di rete: ${e.message}`);
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function hasLabel(issue, name) {
+  return issue.labels?.some(l => l.name.toLowerCase().includes(name));
+}
+
+function getState(issue) {
+  if (hasLabel(issue,'wip') || hasLabel(issue,'in-progress')) return { cls:'issue-wip', label:'⚙ In lavorazione' };
+  if (issue.state === 'closed') return { cls:'issue-closed', label:'✓ Risolto' };
+  return { cls:'issue-open', label:'● Aperto' };
+}
+
+function getPriorityBadge(issue) {
+  if (hasLabel(issue,'critical')) return `<span style="color:var(--red);font-size:0.7rem">🔴 Critico</span>`;
+  if (hasLabel(issue,'high'))     return `<span style="color:var(--yellow);font-size:0.7rem">🟠 Alto</span>`;
+  if (hasLabel(issue,'medium'))   return `<span style="color:var(--gold);font-size:0.7rem">🟡 Medio</span>`;
+  return `<span style="color:var(--text-dim);font-size:0.7rem">🟢 Basso</span>`;
+}
+
+function getCatKey(issue) {
+  const ls = issue.labels?.map(l=>l.name.toLowerCase())||[];
+  for (const k of ['bug','performance','content','payment','feature','security']) if (ls.includes(k)) return k;
+  return 'other';
+}
+
+function fmtShort(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
