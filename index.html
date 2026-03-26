@@ -48,7 +48,7 @@
       position: sticky; top: 0; z-index: 100;
       border-bottom: 1px solid var(--bg-border);
       background: rgba(10,10,15,0.88); backdrop-filter: blur(20px);
-      padding: 0 clamp(1.5rem,5vw,4rem);
+      padding: 0 clamp(1.5rem,5vw,4rem) 0 clamp(0.5rem,2vw,1.5rem);
     }
     .header-inner {
       max-width: 1100px; margin: 0 auto;
@@ -907,7 +907,7 @@ function renderPublicStats(stats) {
         x:{
           ticks:{
             color:'rgba(232,226,217,0.3)', font:{size:9},
-            maxTicksLimit: 30, autoSkip: false,
+            maxRotation: 0, minRotation: 0, maxTicksLimit: 30, autoSkip: false,
             callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
               ? last30[i].slice(5).replace('-', '/') : '',
           },
@@ -1054,7 +1054,7 @@ function renderDashCharts(issues) {
         x:{
           ticks:{
             color:'rgba(232,226,217,0.3)', font:{size:9},
-            maxTicksLimit: 30, autoSkip: false,
+            maxRotation: 0, minRotation: 0, maxTicksLimit: 30, autoSkip: false,
             callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
               ? last30[i].slice(5).replace('-','/') : '',
           },
