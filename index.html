@@ -55,8 +55,8 @@
       display: flex; align-items: center; justify-content: space-between; height: 64px;
     }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-mark { width:32px;height:32px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center; }
-    .brand-mark svg { width:16px;height:16px;fill:var(--gold); }
+    .brand-logo { height: 36px; width: auto; display: block; object-fit: contain; }
+    .brand-logo-loaded + .brand-name { display: none; }
     .brand-name { font-family:var(--font-serif);font-size:1.1rem;font-weight:400;letter-spacing:0.12em;color:var(--text);text-transform:uppercase; }
     .header-nav { display:flex;gap:2rem;align-items:center; }
     .header-nav a { font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s; }
@@ -283,9 +283,13 @@
 <header>
   <div class="header-inner">
     <a href="https://luxhaven360.com" class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 16 16"><path d="M8 1L10 6H15L11 9.5L12.5 14.5L8 11.5L3.5 14.5L5 9.5L1 6H6L8 1Z"/></svg>
-      </div>
+      <img
+        src="https://raw.githubusercontent.com/luxhaven360/luxhaven360-site/main/assets/logo-azienda.png"
+        alt="LuxHaven360"
+        class="brand-logo"
+        onload="this.classList.add('brand-logo-loaded')"
+        onerror="this.style.display='none'"
+      />
       <span class="brand-name">LuxHaven360</span>
     </a>
     <nav class="header-nav">
@@ -774,14 +778,21 @@ async function loadPublicStats() {
   }
 
   try {
-    // Prova prima il Worker (cached 5min server-side)
+    // Prova prima il Worker (cached 5min server-side).
+    // Se il Worker risponde con CORS error (403 da Cloudflare WAF o Bot Fight Mode),
+    // il fetch lancia eccezione → catch silenzioso → passa al fallback GitHub API.
     let stats;
     try {
-      const r = await fetch(`${CFG.workerUrl}/public-stats`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000); // 5s timeout
+      const r = await fetch(`${CFG.workerUrl}/public-stats`, { signal: controller.signal });
+      clearTimeout(timeout);
       if (r.ok) stats = await r.json();
-    } catch {}
+    } catch {
+      // Worker non raggiungibile o CORS bloccato da Cloudflare WAF → usa fallback
+    }
 
-    // Fallback: GitHub API diretta (solo per repo pubblici)
+    // Fallback: GitHub API diretta (funziona sempre per repo pubblici, no CORS)
     if (!stats) {
       stats = await fetchPublicStatsFromGitHub();
     }
@@ -790,6 +801,8 @@ async function loadPublicStats() {
       pubStatsCache = stats;
       pubStatsTs    = Date.now();
       renderPublicStats(stats);
+    } else {
+      document.getElementById('stats-updated').textContent = 'Dati non ancora disponibili';
     }
   } catch (e) {
     document.getElementById('stats-updated').textContent = 'Errore nel caricamento dei dati';
