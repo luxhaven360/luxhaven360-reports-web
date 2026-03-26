@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reports — LuxHaven360</title>
   <meta name="description" content="Segnala un problema al team LuxHaven360" />
+  <!-- Favicon inline SVG — evita 404 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0A0F'/><path d='M8 1L10 6H15L11 9.5L12.5 14.5L8 11.5L3.5 14.5L5 9.5L1 6H6L8 1Z' fill='%23C9A96E'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -559,7 +561,7 @@
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-text">© 2024 LuxHaven360 · Powered by GitHub Issues + Cloudflare Workers · 100% gratuito</span>
+    <span class="footer-text">© <span id="footer-year"></span> LuxHaven360 · Powered by GitHub Issues + Cloudflare Workers</span>
     <a href="https://status.luxhaven360.com" class="footer-link">← Pagina status</a>
   </div>
 </footer>
@@ -608,11 +610,8 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// Carica stats se tab stats è attiva al load
-window.addEventListener('DOMContentLoaded', () => {
-  // Se tab stats visibile, precarica
-  setTimeout(loadPublicStats, 500);
-});
+// Stats tab: carica solo quando l'utente clicca sul tab (non su DOMContentLoaded)
+// Questo evita il CORS error che si verificava ad ogni apertura della pagina
 
 // ── Auto-detect browser ───────────────────────────────────────
 (function detectBrowser() {
@@ -1181,6 +1180,9 @@ function fmtShort(iso) {
 function escHtml(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+// Anno copyright automatico
+document.getElementById('footer-year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
