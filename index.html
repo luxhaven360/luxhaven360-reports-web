@@ -55,7 +55,7 @@
       display: flex; align-items: center; justify-content: space-between; height: 64px;
     }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-logo { height: 36px; width: auto; display: block; object-fit: contain; }
+    .brand-logo { height: 52px; width: auto; display: block; object-fit: contain; }
     .brand-logo-loaded + .brand-name { display: none; }
     .brand-name { font-family:var(--font-serif);font-size:1.1rem;font-weight:400;letter-spacing:0.12em;color:var(--text);text-transform:uppercase; }
     .header-nav { display:flex;gap:2rem;align-items:center; }
@@ -813,13 +813,15 @@ async function fetchPublicStatsFromGitHub() {
   const base = `https://api.github.com/repos/${CFG.githubOwner}/${CFG.githubRepo}`;
   const hdrs = { Accept: 'application/vnd.github+json' };
 
+  // Esegui le due chiamate in parallelo; se entrambe falliscono (403 = repo privato
+  // o non esistente, 404 = non trovato), restituisci null silenziosamente.
   const [openR, closedR] = await Promise.all([
     fetch(`${base}/issues?state=open&per_page=100`, { headers: hdrs }),
     fetch(`${base}/issues?state=closed&per_page=100`, { headers: hdrs }),
   ]);
   if (!openR.ok) return null;
 
-  const [openIssues, closedIssues] = await Promise.all([openR.json(), closedR.json()]);
+  const [openIssues, closedIssues] = await Promise.all([openR.json(), closedR.ok ? closedR.json() : []]);
   const all = [...openIssues, ...closedIssues];
 
   const byCategory = {}, byDay = {};
@@ -895,14 +897,22 @@ function renderPublicStats(stats) {
   pubDayChart = new Chart(document.getElementById('pubChartDaily'), {
     type: 'bar',
     data: {
-      labels: last30.map(d => d.slice(5)),
+      labels: last30.map(d => d.slice(5).replace('-', '/')),
       datasets:[{ data:dailyCounts, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }],
     },
     options: {
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{...tpDefaults} },
       scales:{
-        x:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9}, maxTicksLimit:7 }, grid:{color:DIM} },
+        x:{
+          ticks:{
+            color:'rgba(232,226,217,0.3)', font:{size:9},
+            maxTicksLimit: 30, autoSkip: false,
+            callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
+              ? last30[i].slice(5).replace('-', '/') : '',
+          },
+          grid:{color:DIM}
+        },
         y:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9} }, grid:{color:DIM} },
       },
     },
@@ -1036,8 +1046,23 @@ function renderDashCharts(issues) {
   if (dayChartInst) dayChartInst.destroy();
   dayChartInst = new Chart(document.getElementById('chartDaily'), {
     type: 'bar',
-    data: { labels:last30.map(d=>d.slice(5)), datasets:[{ data:daily, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:tp }, scales:{ x:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9},maxTicksLimit:7},grid:{color:DIM}}, y:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9}},grid:{color:DIM}} } },
+    data: { labels:last30.map(d=>d.slice(5).replace('-','/')), datasets:[{ data:daily, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:tp },
+      scales:{
+        x:{
+          ticks:{
+            color:'rgba(232,226,217,0.3)', font:{size:9},
+            maxTicksLimit: 30, autoSkip: false,
+            callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
+              ? last30[i].slice(5).replace('-','/') : '',
+          },
+          grid:{color:DIM}
+        },
+        y:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9}},grid:{color:DIM}}
+      }
+    },
   });
 }
 
