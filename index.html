@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reports — LuxHaven360</title>
   <meta name="description" content="Segnala un problema al team LuxHaven360" />
-  <!-- Favicon inline SVG — evita 404 -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230A0A0F'/><path d='M8 1L10 6H15L11 9.5L12.5 14.5L8 11.5L3.5 14.5L5 9.5L1 6H6L8 1Z' fill='%23C9A96E'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,6 +61,21 @@
     .header-nav a { font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s; }
     .header-nav a:hover, .header-nav a.active { color:var(--gold); }
 
+    /* ── LANG SWITCHER ── */
+    .lang-switcher {
+      display: flex; align-items: center; gap: 1px;
+      border: 1px solid var(--bg-border); padding: 1px;
+    }
+    .lang-btn {
+      background: transparent; border: none;
+      font-family: var(--font-sans); font-size: 0.52rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); cursor: pointer;
+      padding: 4px 7px; transition: color 0.18s, background 0.18s;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active { color: var(--gold); background: var(--gold-dim); }
+
     /* ── MAIN ── */
     main { max-width:1100px;margin:0 auto;padding:clamp(2rem,6vw,5rem) clamp(1.5rem,5vw,4rem);position:relative;z-index:1; }
 
@@ -73,28 +87,19 @@
     .page-desc { font-size:0.82rem;color:var(--text-dim);letter-spacing:0.03em;max-width:520px;line-height:1.7; }
 
     /* ── TABS ── */
-    .tabs {
-      display: flex; gap: 0; border: 1px solid var(--bg-border);
-      width: fit-content; margin-bottom: 3rem;
-    }
+    .tabs { display:flex;gap:0;border:1px solid var(--bg-border);width:fit-content;margin-bottom:3rem; }
     .tab-btn {
-      padding: 0.65rem 1.5rem; background: transparent; border: none;
-      font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text-dim); cursor: pointer; transition: all 0.2s;
-      border-right: 1px solid var(--bg-border); position: relative;
+      padding:0.65rem 1.5rem;background:transparent;border:none;
+      font-family:var(--font-sans);font-size:0.7rem;letter-spacing:0.12em;
+      text-transform:uppercase;color:var(--text-dim);cursor:pointer;transition:all 0.2s;
+      border-right:1px solid var(--bg-border);position:relative;
     }
-    .tab-btn:last-child { border-right: none; }
-    .tab-btn.active { background: var(--gold-dim); color: var(--gold); }
-    .tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.03); }
-    /* Team tab badge */
-    .tab-btn .tab-badge {
-      position: absolute; top: 4px; right: 4px;
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--gold); opacity: 0.7;
-    }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-btn:last-child { border-right:none; }
+    .tab-btn.active { background:var(--gold-dim);color:var(--gold); }
+    .tab-btn:hover:not(.active) { color:var(--text);background:rgba(255,255,255,0.03); }
+    .tab-btn .tab-badge { position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0.7; }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
 
     /* ── FORM ── */
     .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
@@ -104,24 +109,22 @@
     label { font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold); }
 
     input, select, textarea {
-      background: var(--bg-card); border: 1px solid var(--bg-border);
-      color: var(--text); font-family: var(--font-sans); font-size: 0.85rem;
-      font-weight: 300; padding: 0.85rem 1rem; outline: none; width: 100%;
-      transition: border-color 0.2s; -webkit-appearance: none;
+      background:var(--bg-card);border:1px solid var(--bg-border);color:var(--text);
+      font-family:var(--font-sans);font-size:0.85rem;font-weight:300;padding:0.85rem 1rem;
+      outline:none;width:100%;transition:border-color 0.2s;-webkit-appearance:none;
     }
-    input:focus, select:focus, textarea:focus { border-color: rgba(201,169,110,0.5); }
-    input.error, select.error, textarea.error { border-color: rgba(217,91,91,0.5); }
-    textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    input:focus, select:focus, textarea:focus { border-color:rgba(201,169,110,0.5); }
+    input.error, select.error, textarea.error { border-color:rgba(217,91,91,0.5); }
+    textarea { resize:vertical;min-height:120px;line-height:1.6; }
     select {
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(201,169,110,0.6)'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+      cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(201,169,110,0.6)'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;
     }
-    select option { background: #141420; }
+    select option { background:#141420; }
     .form-hint { font-size:0.68rem;color:var(--text-dim);letter-spacing:0.03em; }
     .field-error { font-size:0.68rem;color:var(--red);letter-spacing:0.03em; }
 
-    /* ── CHAR COUNTER ── */
     .field-footer { display:flex;justify-content:space-between;align-items:center;margin-top:0; }
     .char-counter { font-size:0.65rem;color:var(--text-dim);letter-spacing:0.04em;font-variant-numeric:tabular-nums; }
     .char-counter.warn { color:var(--yellow); }
@@ -130,46 +133,42 @@
     /* ── SEVERITY PILLS ── */
     .severity-group { display:flex;gap:0.5rem;flex-wrap:wrap; }
     .severity-pill {
-      padding: 0.5rem 1rem; border: 1px solid var(--bg-border); background: transparent;
-      cursor: pointer; font-family: var(--font-sans); font-size: 0.7rem;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); transition: all 0.2s;
+      padding:0.5rem 1rem;border:1px solid var(--bg-border);background:transparent;
+      cursor:pointer;font-family:var(--font-sans);font-size:0.7rem;
+      letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);transition:all 0.2s;
     }
     .severity-pill:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
     .severity-pill.selected { border-color:var(--gold);color:var(--gold);background:var(--gold-dim); }
     .severity-pill[data-value="critical"].selected { border-color:var(--red);color:var(--red);background:rgba(217,91,91,0.08); }
-    .severity-pill[data-value="high"].selected    { border-color:var(--yellow);color:var(--yellow);background:rgba(232,184,75,0.08); }
+    .severity-pill[data-value="high"].selected { border-color:var(--yellow);color:var(--yellow);background:rgba(232,184,75,0.08); }
 
-    /* ── HONEYPOT (invisible) ── */
     .hp-field { display:none !important; }
 
-    /* ── SUBMIT BUTTON ── */
+    /* ── SUBMIT ── */
     .btn-submit {
-      display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem;
-      background: transparent; border: 1px solid var(--gold); color: var(--gold);
-      font-family: var(--font-sans); font-size: 0.72rem; letter-spacing: 0.16em;
-      text-transform: uppercase; cursor: pointer; transition: all 0.25s; margin-top: 0.5rem;
+      display:inline-flex;align-items:center;gap:0.75rem;padding:1rem 2.5rem;
+      background:transparent;border:1px solid var(--gold);color:var(--gold);
+      font-family:var(--font-sans);font-size:0.72rem;letter-spacing:0.16em;
+      text-transform:uppercase;cursor:pointer;transition:all 0.25s;margin-top:0.5rem;
     }
-    .btn-submit:hover { background: var(--gold-dim); }
+    .btn-submit:hover { background:var(--gold-dim); }
     .btn-submit:disabled { opacity:0.5;cursor:not-allowed; }
     .btn-arrow { font-size:1rem;transition:transform 0.2s; }
     .btn-submit:hover .btn-arrow { transform:translateX(4px); }
     .btn-spinner {
-      width: 14px; height: 14px; border: 1.5px solid rgba(201,169,110,0.3);
-      border-top-color: var(--gold); border-radius: 50%;
-      animation: spin 0.7s linear infinite; display: none;
+      width:14px;height:14px;border:1.5px solid rgba(201,169,110,0.3);
+      border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;display:none;
     }
-    .btn-submit.loading .btn-spinner { display: block; }
-    .btn-submit.loading .btn-arrow { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-submit.loading .btn-spinner { display:block; }
+    .btn-submit.loading .btn-arrow { display:none; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
     /* ── FORM STATES ── */
     .form-error {
-      display:none; padding:1rem 1.25rem;
-      border:1px solid rgba(217,91,91,0.25); background:rgba(217,91,91,0.05);
-      font-size:0.78rem;color:#e88;margin-bottom:1.25rem;
+      display:none;padding:1rem 1.25rem;border:1px solid rgba(217,91,91,0.25);
+      background:rgba(217,91,91,0.05);font-size:0.78rem;color:#e88;margin-bottom:1.25rem;
     }
     .form-error.show { display:block; }
-
     .form-success { display:none;text-align:center;padding:3rem;border:1px solid rgba(76,175,125,0.2);background:rgba(76,175,125,0.04); }
     .form-success.show { display:block; }
     .success-icon { width:56px;height:56px;border:1px solid rgba(76,175,125,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem; }
@@ -186,12 +185,11 @@
 
     /* ── PUBLIC STATS ── */
     .mini-stats-grid {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 1px; background: var(--bg-border);
-      border: 1px solid var(--bg-border); margin-bottom: 2rem;
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:1px;background:var(--bg-border);border:1px solid var(--bg-border);margin-bottom:2rem;
     }
-    @media (max-width:580px) { .mini-stats-grid { grid-template-columns: repeat(2,1fr); } }
-    .mini-stat-card { background: var(--bg-card); padding: 1.25rem; text-align: center; }
+    @media (max-width:580px) { .mini-stats-grid { grid-template-columns:repeat(2,1fr); } }
+    .mini-stat-card { background:var(--bg-card);padding:1.25rem;text-align:center; }
     .mini-stat-value { font-family:var(--font-serif);font-size:1.8rem;font-weight:300;color:var(--gold);display:block;margin-bottom:0.25rem; }
     .mini-stat-label { font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim); }
 
@@ -220,7 +218,6 @@
     .issues-table td { padding:1rem;font-size:0.78rem;color:var(--text-dim);border-bottom:1px solid rgba(201,169,110,0.05);vertical-align:top; }
     .issues-table tr:hover td { background:rgba(201,169,110,0.03);color:var(--text); }
     .issue-title { color:var(--text);font-size:0.82rem;margin-bottom:3px; }
-
     .label-badge { display:inline-block;font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border:1px solid;margin-right:4px; }
     .status-badge { display:inline-flex;align-items:center;gap:5px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border:1px solid; }
     .issue-open    { color:var(--yellow);border-color:rgba(232,184,75,0.3); }
@@ -231,21 +228,19 @@
     .cat-feature     { color:var(--blue);   border-color:rgba(91,155,217,0.3); }
     .cat-other       { color:var(--text-dim);border-color:var(--bg-border); }
 
-    /* ── STATUS ACTIONS (team only) ── */
     .issue-actions { display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.5rem; }
     .action-btn {
-      padding: 0.25rem 0.7rem; font-size: 0.6rem; letter-spacing: 0.08em;
-      text-transform: uppercase; cursor: pointer; font-family: var(--font-sans);
-      background: transparent; border: 1px solid var(--bg-border); color: var(--text-dim);
-      transition: all 0.15s;
+      padding:0.25rem 0.7rem;font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;
+      cursor:pointer;font-family:var(--font-sans);background:transparent;
+      border:1px solid var(--bg-border);color:var(--text-dim);transition:all 0.15s;
     }
     .action-btn:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
-    .action-btn.wip { border-color:rgba(91,155,217,0.3);color:var(--blue); }
+    .action-btn.wip     { border-color:rgba(91,155,217,0.3);color:var(--blue); }
     .action-btn.resolve { border-color:rgba(76,175,125,0.3);color:var(--green); }
-    .action-btn.reopen { border-color:rgba(232,184,75,0.3);color:var(--yellow); }
+    .action-btn.reopen  { border-color:rgba(232,184,75,0.3);color:var(--yellow); }
     .action-btn:disabled { opacity:0.4;cursor:wait; }
 
-    /* ── FILTERS & PAGINATION ── */
+    /* ── FILTERS ── */
     .filter-bar { display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1.25rem; }
     .filter-chip { padding:0.35rem 0.9rem;background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s; }
     .filter-chip:hover { border-color:rgba(201,169,110,0.3);color:var(--text); }
@@ -254,7 +249,7 @@
     .page-btn { padding:0.4rem 0.85rem;background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);font-size:0.72rem;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s; }
     .page-btn:hover, .page-btn.active { border-color:var(--gold);color:var(--gold); }
 
-    /* ── TEAM AUTH GATE ── */
+    /* ── TEAM AUTH ── */
     .team-gate { text-align:center;padding:3rem;border:1px solid var(--bg-border); }
     .team-gate-title { font-family:var(--font-serif);font-size:1.6rem;font-weight:300;margin-bottom:0.75rem; }
     .team-gate-text  { font-size:0.8rem;color:var(--text-dim);margin-bottom:2rem; }
@@ -264,7 +259,6 @@
     .team-input-row button:hover { background:var(--gold-dim); }
     .team-auth-error { font-size:0.72rem;color:var(--red);margin-top:0.75rem; }
 
-    /* ── LOADING ── */
     .skeleton { background:linear-gradient(90deg,var(--bg-card) 25%,rgba(201,169,110,0.05) 50%,var(--bg-card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:2px; }
     @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
     .fade-in { opacity:0;transform:translateY(12px);animation:fadeIn 0.5s ease forwards; }
@@ -276,6 +270,7 @@
     .footer-text { font-size:0.68rem;letter-spacing:0.08em;color:var(--text-dim); }
     .footer-link { color:var(--gold);text-decoration:none;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid rgba(201,169,110,0.3);padding-bottom:1px;transition:border-color 0.2s; }
     .footer-link:hover { border-color:var(--gold); }
+    @media (max-width:560px) { .lang-switcher { display:none; } }
   </style>
 </head>
 <body>
@@ -283,19 +278,22 @@
 <header>
   <div class="header-inner">
     <a href="https://luxhaven360.com" class="brand">
-      <img
-        src="https://raw.githubusercontent.com/luxhaven360/luxhaven360-site/main/assets/logo-azienda.png"
-        alt="LuxHaven360"
-        class="brand-logo"
-        onload="this.classList.add('brand-logo-loaded')"
-        onerror="this.style.display='none'"
-      />
+      <img src="https://raw.githubusercontent.com/luxhaven360/luxhaven360-site/main/assets/logo-azienda.png"
+        alt="LuxHaven360" class="brand-logo"
+        onload="this.classList.add('brand-logo-loaded')" onerror="this.style.display='none'" />
       <span class="brand-name">LuxHaven360</span>
     </a>
     <nav class="header-nav">
-      <a href="https://status.luxhaven360.com">Status</a>
-      <a href="#" class="active">Reports</a>
+      <a href="https://status.luxhaven360.com" id="nav-status">Status</a>
+      <a href="#" class="active" id="nav-reports">Reports</a>
     </nav>
+    <div class="lang-switcher" id="lang-switcher">
+      <button class="lang-btn active" data-lang="it">IT</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
     <div></div>
   </div>
 </header>
@@ -304,68 +302,60 @@
 
   <!-- PAGE HERO -->
   <section class="page-hero fade-in">
-    <div class="eyebrow">Centro segnalazioni</div>
-    <h1 class="page-title">Segnala un <em>problema</em></h1>
-    <p class="page-desc">
-      Hai notato qualcosa che non va? Il form qui sotto raggiunge direttamente il nostro team.
-      Ogni segnalazione viene presa in carico entro poche ore.
-    </p>
+    <div class="eyebrow" id="hero-eyebrow">Centro segnalazioni</div>
+    <h1 class="page-title" id="hero-title">Segnala un <em>problema</em></h1>
+    <p class="page-desc" id="hero-desc">Hai notato qualcosa che non va? Il form qui sotto raggiunge direttamente il nostro team. Ogni segnalazione viene presa in carico entro poche ore.</p>
   </section>
 
-  <!-- TABS (team tab iniettato via JS se ?team in URL) -->
+  <!-- TABS -->
   <div class="tabs" id="tabs-container">
-    <button class="tab-btn active" data-tab="report">Invia segnalazione</button>
-    <button class="tab-btn" data-tab="stats">Statistiche</button>
-    <!-- tab team iniettato da JS -->
+    <button class="tab-btn active" data-tab="report" id="tab-btn-report">Invia segnalazione</button>
+    <button class="tab-btn" data-tab="stats" id="tab-btn-stats">Statistiche</button>
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       TAB 1: FORM SEGNALAZIONE
-  ══════════════════════════════════════════════════ -->
+  <!-- ══ TAB 1: FORM ══ -->
   <div class="tab-panel active" id="tab-report">
-
     <div class="form-error" id="form-error"></div>
-
     <div id="form-wrap">
       <div class="form-grid">
 
         <div class="form-field">
-          <label for="name">Il tuo nome</label>
+          <label for="name" id="label-name">Il tuo nome</label>
           <input type="text" id="name" placeholder="Nome Cognome" autocomplete="name" />
         </div>
 
         <div class="form-field">
-          <label for="email">Email <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <label for="email" id="label-email">Email <span id="label-optional" style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
           <input type="email" id="email" placeholder="tua@email.com" autocomplete="email" />
-          <span class="form-hint">Solo se vuoi ricevere aggiornamenti sul tuo report.</span>
+          <span class="form-hint" id="hint-email">Solo se vuoi ricevere aggiornamenti sul tuo report.</span>
         </div>
 
         <div class="form-field full">
-          <label for="category">Categoria del problema</label>
+          <label for="category" id="label-category">Categoria del problema</label>
           <select id="category">
-            <option value="">Seleziona una categoria…</option>
-            <option value="bug">🐞 Bug / Errore del sito</option>
-            <option value="performance">⚡ Lentezza / Performance</option>
-            <option value="content">📄 Contenuto errato o mancante</option>
-            <option value="payment">💳 Problema pagamento / Prenotazione</option>
-            <option value="feature">💡 Richiesta funzionalità</option>
-            <option value="security">🔒 Problema di sicurezza</option>
-            <option value="other">🔧 Altro</option>
+            <option value="" id="cat-placeholder">Seleziona una categoria…</option>
+            <option value="bug"         id="cat-bug">🐞 Bug / Errore del sito</option>
+            <option value="performance" id="cat-performance">⚡ Lentezza / Performance</option>
+            <option value="content"     id="cat-content">📄 Contenuto errato o mancante</option>
+            <option value="payment"     id="cat-payment">💳 Problema pagamento / Prenotazione</option>
+            <option value="feature"     id="cat-feature">💡 Richiesta funzionalità</option>
+            <option value="security"    id="cat-security">🔒 Problema di sicurezza</option>
+            <option value="other"       id="cat-other">🔧 Altro</option>
           </select>
         </div>
 
         <div class="form-field full">
-          <label>Priorità / Impatto</label>
+          <label id="label-priority">Priorità / Impatto</label>
           <div class="severity-group" id="severity-group">
-            <button type="button" class="severity-pill selected" data-value="low">🟢 Basso</button>
-            <button type="button" class="severity-pill" data-value="medium">🟡 Medio</button>
-            <button type="button" class="severity-pill" data-value="high">🟠 Alto</button>
-            <button type="button" class="severity-pill" data-value="critical">🔴 Critico</button>
+            <button type="button" class="severity-pill selected" data-value="low"      id="sev-low">🟢 Basso</button>
+            <button type="button" class="severity-pill"          data-value="medium"   id="sev-medium">🟡 Medio</button>
+            <button type="button" class="severity-pill"          data-value="high"     id="sev-high">🟠 Alto</button>
+            <button type="button" class="severity-pill"          data-value="critical" id="sev-critical">🔴 Critico</button>
           </div>
         </div>
 
         <div class="form-field full">
-          <label for="title">Titolo del problema *</label>
+          <label for="title" id="label-title">Titolo del problema *</label>
           <input type="text" id="title" placeholder="Descrivi brevemente il problema…" maxlength="200" required />
           <div class="field-footer">
             <span class="field-error" id="title-error"></span>
@@ -374,7 +364,7 @@
         </div>
 
         <div class="form-field full">
-          <label for="description">Descrizione dettagliata *</label>
+          <label for="description" id="label-description">Descrizione dettagliata *</label>
           <textarea id="description" maxlength="3000"
             placeholder="Descrivi cosa è successo, come riprodurre il problema, su quale pagina/sezione si è verificato…"></textarea>
           <div class="field-footer">
@@ -384,22 +374,21 @@
         </div>
 
         <div class="form-field">
-          <label for="url-field">URL della pagina <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <label for="url-field" id="label-url">URL della pagina <span id="label-url-opt" style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
           <input type="url" id="url-field" placeholder="https://luxhaven360.com/pagina" />
         </div>
 
         <div class="form-field">
-          <label for="browser">Browser / Dispositivo <span style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
+          <label for="browser" id="label-browser">Browser / Dispositivo <span id="label-browser-opt" style="color:var(--text-dim);font-size:0.8em">(opzionale)</span></label>
           <input type="text" id="browser" placeholder="es. Chrome 120 · macOS" />
           <span class="form-hint" id="auto-browser-hint"></span>
         </div>
 
-        <!-- HONEYPOT — non compilare (bot trap) -->
+        <!-- HONEYPOT -->
         <div class="form-field hp-field" aria-hidden="true">
           <label for="_hp">Non compilare</label>
           <input type="text" id="_hp" name="_hp" autocomplete="off" tabindex="-1" />
         </div>
-
       </div>
 
       <div style="margin-top:2rem">
@@ -416,192 +405,576 @@
       <div class="success-icon">
         <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
       </div>
-      <h2 class="success-title">Segnalazione ricevuta</h2>
+      <h2 class="success-title" id="success-title">Segnalazione ricevuta</h2>
       <div class="success-issue-number" id="success-issue-ref">—</div>
       <p class="success-text">
-        Grazie! Il tuo report è stato inviato con successo al team di LuxHaven360.<br>
+        <span id="success-text-body">Grazie! Il tuo report è stato inviato con successo al team di LuxHaven360.<br>
         Puoi verificare lo stato dei servizi su
-        <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a><br><br>
+        <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a></span><br><br>
         <span class="success-link" id="success-new-report">Invia un'altra segnalazione →</span>
       </p>
     </div>
-
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       TAB 2: STATISTICHE PUBBLICHE
-  ══════════════════════════════════════════════════ -->
+  <!-- ══ TAB 2: STATISTICHE PUBBLICHE ══ -->
   <div class="tab-panel" id="tab-stats">
-
     <div class="section-header">
-      <h2 class="section-title">Statistiche pubbliche</h2>
+      <h2 class="section-title" id="stats-title">Statistiche pubbliche</h2>
       <span class="section-tag" id="stats-updated">—</span>
     </div>
-
     <div class="mini-stats-grid" id="pub-stats-grid">
-      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Totale</span></div>
-      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Aperti</span></div>
-      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">In lavorazione</span></div>
-      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block">Risolti</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block" id="sl-total">Totale</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block" id="sl-open">Aperti</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block" id="sl-wip">In lavorazione</span></div>
+      <div class="mini-stat-card"><span class="mini-stat-value skeleton" style="height:2rem;display:block;width:60%;margin:auto"></span><span class="mini-stat-label" style="margin-top:0.5rem;display:block" id="sl-resolved">Risolti</span></div>
     </div>
-
     <div class="charts-grid-pub">
       <div class="chart-card">
-        <div class="chart-title">Segnalazioni per categoria</div>
+        <div class="chart-title" id="pub-chart-cat-title">Segnalazioni per categoria</div>
         <div class="chart-wrap"><canvas id="pubChartCategories"></canvas></div>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Segnalazioni — ultimi 30 giorni</div>
+        <div class="chart-title" id="pub-chart-daily-title">Segnalazioni — ultimi 30 giorni</div>
         <div class="chart-wrap"><canvas id="pubChartDaily"></canvas></div>
       </div>
     </div>
-
-    <p style="font-size:0.72rem;color:var(--text-dim);text-align:center;margin-top:1rem">
-      I dati mostrano segnalazioni aggregate senza informazioni personali.
-      Aggiornamento automatico ogni 5 minuti.
+    <p style="font-size:0.72rem;color:var(--text-dim);text-align:center;margin-top:1rem" id="stats-footer-note">
+      I dati mostrano segnalazioni aggregate senza informazioni personali. Aggiornamento automatico ogni 5 minuti.
     </p>
-
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       TAB 3: DASHBOARD TEAM (solo con ?team in URL)
-  ══════════════════════════════════════════════════ -->
+  <!-- ══ TAB 3: TEAM DASHBOARD ══ -->
   <div class="tab-panel" id="tab-team">
-
-    <!-- Auth gate -->
     <div id="team-gate" class="team-gate fade-in">
-      <h2 class="team-gate-title">Accesso team</h2>
-      <p class="team-gate-text">
-        Inserisci il GitHub Personal Access Token del team per accedere alla dashboard completa.
-      </p>
+      <h2 class="team-gate-title" id="team-gate-title">Accesso team</h2>
+      <p class="team-gate-text" id="team-gate-text">Inserisci il GitHub Personal Access Token del team per accedere alla dashboard completa.</p>
       <div class="team-input-row">
         <input type="password" id="team-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" />
-        <button type="button" onclick="teamLogin()">Accedi</button>
+        <button type="button" onclick="teamLogin()" id="team-login-btn">Accedi</button>
       </div>
       <p class="team-auth-error" id="team-auth-error"></p>
-      <p style="font-size:0.65rem;color:var(--text-dim);margin-top:1.5rem;max-width:400px;margin-left:auto;margin-right:auto">
+      <p style="font-size:0.65rem;color:var(--text-dim);margin-top:1.5rem;max-width:400px;margin-left:auto;margin-right:auto" id="team-token-note">
         Il token viene salvato solo nel tuo browser (localStorage) e non è mai trasmesso ad altri.
       </p>
     </div>
 
-    <!-- Dashboard content -->
     <div id="dashboard-content" style="display:none">
-
       <div class="section-header">
-        <h2 class="section-title">Panoramica team</h2>
+        <h2 class="section-title" id="dash-overview-title">Panoramica team</h2>
         <div style="display:flex;gap:1rem;align-items:center">
           <span class="section-tag" id="dash-updated">—</span>
-          <button type="button" onclick="refreshDashboard()" style="background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);padding:0.35rem 0.85rem;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans)">↻ Aggiorna</button>
+          <button type="button" onclick="refreshDashboard()" id="dash-refresh-btn"
+            style="background:transparent;border:1px solid var(--bg-border);color:var(--text-dim);padding:0.35rem 0.85rem;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans)">↻ Aggiorna</button>
         </div>
       </div>
-
-      <div class="stats-grid" id="dash-stats">
-        <div class="stat-card"><span class="stat-value" id="s-total">—</span><span class="stat-label">Totale</span></div>
-        <div class="stat-card"><span class="stat-value" id="s-open">—</span><span class="stat-label">Aperti</span></div>
-        <div class="stat-card"><span class="stat-value" id="s-wip">—</span><span class="stat-label">In lavorazione</span></div>
-        <div class="stat-card"><span class="stat-value" id="s-closed">—</span><span class="stat-label">Risolti</span></div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-value" id="s-total">—</span><span class="stat-label" id="ds-total">Totale</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-open">—</span><span class="stat-label" id="ds-open">Aperti</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-wip">—</span><span class="stat-label" id="ds-wip">In lavorazione</span></div>
+        <div class="stat-card"><span class="stat-value" id="s-closed">—</span><span class="stat-label" id="ds-closed">Risolti</span></div>
       </div>
-
       <div class="charts-grid-dash">
         <div class="chart-card">
-          <div class="chart-title">Per categoria</div>
+          <div class="chart-title" id="dash-chart-cat-title">Per categoria</div>
           <div class="chart-wrap"><canvas id="chartCategories"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-title">Giornaliero — ultimi 30 giorni</div>
+          <div class="chart-title" id="dash-chart-daily-title">Giornaliero — ultimi 30 giorni</div>
           <div class="chart-wrap"><canvas id="chartDaily"></canvas></div>
         </div>
       </div>
-
-      <!-- Issues table -->
       <div class="section-header" style="margin-top:1rem">
-        <h2 class="section-title">Segnalazioni</h2>
-        <div style="display:flex;gap:0.5rem;align-items:center">
-          <input type="text" id="search-input" placeholder="Cerca…"
-            style="padding:0.4rem 0.75rem;font-size:0.72rem;min-width:0;width:180px"
-            oninput="filterAndRender()" />
-        </div>
+        <h2 class="section-title" id="issues-title">Segnalazioni</h2>
+        <input type="text" id="search-input" placeholder="Cerca…"
+          style="padding:0.4rem 0.75rem;font-size:0.72rem;width:180px" oninput="filterAndRender()" />
       </div>
-
-      <div class="filter-bar">
-        <button class="filter-chip active" data-filter="all">Tutti</button>
-        <button class="filter-chip" data-filter="open">Aperti</button>
-        <button class="filter-chip" data-filter="wip">In lavorazione</button>
-        <button class="filter-chip" data-filter="closed">Risolti</button>
-        <button class="filter-chip" data-filter="critical">Critici</button>
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-chip active" data-filter="all"      id="fc-all">Tutti</button>
+        <button class="filter-chip"        data-filter="open"     id="fc-open">Aperti</button>
+        <button class="filter-chip"        data-filter="wip"      id="fc-wip">In lavorazione</button>
+        <button class="filter-chip"        data-filter="closed"   id="fc-closed">Risolti</button>
+        <button class="filter-chip"        data-filter="critical" id="fc-critical">Critici</button>
       </div>
-
       <div id="issues-wrap">
         <table class="issues-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Segnalazione</th>
-              <th>Categoria</th>
-              <th>Priorità</th>
-              <th>Stato</th>
-              <th>Data</th>
-              <th>Azioni</th>
+              <th id="th-num">#</th>
+              <th id="th-report">Segnalazione</th>
+              <th id="th-cat">Categoria</th>
+              <th id="th-priority">Priorità</th>
+              <th id="th-status">Stato</th>
+              <th id="th-date">Data</th>
+              <th id="th-actions">Azioni</th>
             </tr>
           </thead>
           <tbody id="issues-body">
-            <tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem">Caricamento…</td></tr>
+            <tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem" id="td-loading">Caricamento…</td></tr>
           </tbody>
         </table>
         <div class="pagination" id="pagination"></div>
       </div>
-
       <div style="text-align:right;margin-top:2rem">
-        <button type="button" onclick="teamLogout()"
+        <button type="button" onclick="teamLogout()" id="team-logout-btn"
           style="background:transparent;border:none;color:var(--text-dim);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:var(--font-sans)">
           Disconnetti →
         </button>
       </div>
     </div>
-
   </div>
 
 </main>
 
 <footer>
   <div class="footer-inner">
-    <span class="footer-text">© <span id="footer-year"></span> LuxHaven360 · Powered by GitHub Issues + Cloudflare Workers</span>
-    <a href="https://status.luxhaven360.com" class="footer-link">← Pagina status</a>
+    <span class="footer-text">© <span id="footer-year"></span> LuxHaven360 · <span id="footer-powered">Powered by GitHub Issues + Cloudflare Workers</span></span>
+    <a href="https://status.luxhaven360.com" class="footer-link" id="footer-status-link">← Pagina status</a>
   </div>
 </footer>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   REPORTS PAGE v2.0 — LuxHaven360
-   · Tab team accessibile solo con ?team in URL
-   · Statistiche pubbliche: nessuna autenticazione
-   · Worker: create-issue, public-stats, update-issue
+   REPORTS PAGE v3.0 — LuxHaven360
+   · Full i18n: IT / EN / FR / DE / ES — instant switching, no reload
 ═══════════════════════════════════════════════════════════════ */
 
-// ═══════════════════════════════════════════════════════════════
-//  !! CONFIGURA QUI !!
-// ═══════════════════════════════════════════════════════════════
 const CFG = {
-  workerUrl:   'https://reports-api.luxhaven360.com', // ← cambia
-  githubOwner: 'luxhaven360',                                   // ← cambia
-  githubRepo:  'luxhaven360-reports',                            // ← cambia
-  statusUrl:   'https://status.luxhaven360.com',
-  statsCacheTTL: 5 * 60 * 1000, // 5 min
+  workerUrl:     'https://reports-api.luxhaven360.com',
+  githubOwner:   'luxhaven360',
+  githubRepo:    'luxhaven360-reports',
+  statusUrl:     'https://status.luxhaven360.com',
+  statsCacheTTL: 5 * 60 * 1000,
 };
-// ═══════════════════════════════════════════════════════════════
 
-// ── Team mode: mostra tab solo se ?team nell'URL ──────────────
+/* ════════════════════════════════════════════════════════════
+   I18N DICTIONARY
+════════════════════════════════════════════════════════════ */
+const LANG = {
+  it: {
+    nav_status:'Status', nav_reports:'Reports',
+    hero_eyebrow:'Centro segnalazioni',
+    hero_title:'Segnala un <em>problema</em>',
+    hero_desc:'Hai notato qualcosa che non va? Il form qui sotto raggiunge direttamente il nostro team. Ogni segnalazione viene presa in carico entro poche ore.',
+    tab_report:'Invia segnalazione', tab_stats:'Statistiche', tab_team:'Dashboard Team',
+    label_name:'Il tuo nome', ph_name:'Nome Cognome',
+    label_email:'Email', label_optional:'(opzionale)',
+    hint_email:'Solo se vuoi ricevere aggiornamenti sul tuo report.',
+    label_category:'Categoria del problema', cat_ph:'Seleziona una categoria…',
+    cat_bug:'🐞 Bug / Errore del sito', cat_perf:'⚡ Lentezza / Performance',
+    cat_content:'📄 Contenuto errato o mancante', cat_payment:'💳 Problema pagamento / Prenotazione',
+    cat_feature:'💡 Richiesta funzionalità', cat_security:'🔒 Problema di sicurezza', cat_other:'🔧 Altro',
+    label_priority:'Priorità / Impatto',
+    sev_low:'🟢 Basso', sev_medium:'🟡 Medio', sev_high:'🟠 Alto', sev_critical:'🔴 Critico',
+    label_title:'Titolo del problema *', ph_title:'Descrivi brevemente il problema…',
+    label_desc:'Descrizione dettagliata *',
+    ph_desc:'Descrivi cosa è successo, come riprodurre il problema, su quale pagina/sezione si è verificato…',
+    label_url:'URL della pagina', ph_url:'https://luxhaven360.com/pagina',
+    label_browser:'Browser / Dispositivo', ph_browser:'es. Chrome 120 · macOS',
+    btn_submit:'Invia segnalazione', btn_sending:'Invio in corso…',
+    err_required:'Campo obbligatorio', err_maxchars:'Massimo 200 caratteri',
+    err_ratelimit:'Troppe segnalazioni in poco tempo. Riprova tra un minuto.',
+    err_network:'Impossibile inviare la segnalazione. Riprova tra qualche istante.',
+    success_title:'Segnalazione ricevuta',
+    success_body:'Grazie! Il tuo report è stato inviato con successo al team di LuxHaven360.<br>Puoi verificare lo stato dei servizi su <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a>',
+    success_new:"Invia un'altra segnalazione →",
+    stats_title:'Statistiche pubbliche', stats_updated:'Aggiornato:', stats_cache:'(cache)',
+    stats_err:'Errore nel caricamento', stats_na:'Dati non ancora disponibili',
+    sl_total:'Totale', sl_open:'Aperti', sl_wip:'In lavorazione', sl_resolved:'Risolti',
+    pub_chart_cat:'Segnalazioni per categoria', pub_chart_daily:'Segnalazioni — ultimi 30 giorni',
+    stats_note:'I dati mostrano segnalazioni aggregate senza informazioni personali. Aggiornamento automatico ogni 5 minuti.',
+    team_gate_title:'Accesso team',
+    team_gate_text:'Inserisci il GitHub Personal Access Token del team per accedere alla dashboard completa.',
+    team_login:'Accedi',
+    team_token_note:'Il token viene salvato solo nel tuo browser (localStorage) e non è mai trasmesso ad altri.',
+    team_invalid:'Token non valido. Deve iniziare con "ghp_" o "github_pat_".',
+    team_expired:'Token non valido o scaduto.',
+    dash_title:'Panoramica team', dash_refresh:'↻ Aggiorna', dash_updated:'Aggiornato:',
+    ds_total:'Totale', ds_open:'Aperti', ds_wip:'In lavorazione', ds_closed:'Risolti',
+    dash_chart_cat:'Per categoria', dash_chart_daily:'Giornaliero — ultimi 30 giorni',
+    issues_title:'Segnalazioni', search_ph:'Cerca…',
+    fc_all:'Tutti', fc_open:'Aperti', fc_wip:'In lavorazione', fc_closed:'Risolti', fc_critical:'Critici',
+    th_num:'#', th_report:'Segnalazione', th_cat:'Categoria', th_priority:'Priorità',
+    th_status:'Stato', th_date:'Data', th_actions:'Azioni',
+    no_results:'Nessuna segnalazione trovata.', loading:'Caricamento…',
+    state_open:'● Aperto', state_wip:'⚙ In lavorazione', state_closed:'✓ Risolto',
+    act_wip:'⚙ In lavorazione', act_resolve:'✓ Risolvi', act_reopen:'↩ Riapri',
+    team_logout:'Disconnetti →',
+    footer_powered:'Powered by GitHub Issues + Cloudflare Workers', footer_status:'← Pagina status',
+    detected:'Rilevato:', locale:'it-IT',
+    cat_label:{ bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Contenuto', payment:'💳 Pagamento', feature:'💡 Funzionalità', security:'🔒 Sicurezza', other:'🔧 Altro' },
+    sev_label:{ low:'🟢 Basso', medium:'🟡 Medio', high:'🟠 Alto', critical:'🔴 Critico' },
+    ib_cat:'Categoria', ib_pri:'Priorità', ib_from:'Inviata da', ib_anon:'Anonimo',
+    ib_desc:'Descrizione', ib_url:'URL', ib_browser:'Browser / Dispositivo', ib_via:'tramite reports.luxhaven360.com',
+    cat_display:{ bug:'Bug', performance:'Performance', content:'Contenuto', payment:'Pagamento', feature:'Funzionalità', security:'Sicurezza', other:'Altro' },
+  },
+  en: {
+    nav_status:'Status', nav_reports:'Reports',
+    hero_eyebrow:'Reporting center',
+    hero_title:'Report a <em>problem</em>',
+    hero_desc:'Noticed something wrong? The form below reaches our team directly. Every report is reviewed within a few hours.',
+    tab_report:'Submit report', tab_stats:'Statistics', tab_team:'Team Dashboard',
+    label_name:'Your name', ph_name:'Full Name',
+    label_email:'Email', label_optional:'(optional)',
+    hint_email:'Only if you want to receive updates on your report.',
+    label_category:'Problem category', cat_ph:'Select a category…',
+    cat_bug:'🐞 Bug / Site error', cat_perf:'⚡ Slowness / Performance',
+    cat_content:'📄 Wrong or missing content', cat_payment:'💳 Payment / Booking issue',
+    cat_feature:'💡 Feature request', cat_security:'🔒 Security issue', cat_other:'🔧 Other',
+    label_priority:'Priority / Impact',
+    sev_low:'🟢 Low', sev_medium:'🟡 Medium', sev_high:'🟠 High', sev_critical:'🔴 Critical',
+    label_title:'Problem title *', ph_title:'Briefly describe the problem…',
+    label_desc:'Detailed description *',
+    ph_desc:'Describe what happened, how to reproduce the issue, on which page/section it occurred…',
+    label_url:'Page URL', ph_url:'https://luxhaven360.com/page',
+    label_browser:'Browser / Device', ph_browser:'e.g. Chrome 120 · macOS',
+    btn_submit:'Submit report', btn_sending:'Sending…',
+    err_required:'Required field', err_maxchars:'Maximum 200 characters',
+    err_ratelimit:'Too many reports in a short time. Please try again in a minute.',
+    err_network:'Unable to submit the report. Please try again shortly.',
+    success_title:'Report received',
+    success_body:'Thank you! Your report has been successfully sent to the LuxHaven360 team.<br>You can check the service status at <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a>',
+    success_new:'Submit another report →',
+    stats_title:'Public statistics', stats_updated:'Updated:', stats_cache:'(cache)',
+    stats_err:'Error loading data', stats_na:'Data not yet available',
+    sl_total:'Total', sl_open:'Open', sl_wip:'In progress', sl_resolved:'Resolved',
+    pub_chart_cat:'Reports by category', pub_chart_daily:'Reports — last 30 days',
+    stats_note:'Data shows aggregated reports without personal information. Auto-updated every 5 minutes.',
+    team_gate_title:'Team access',
+    team_gate_text:"Enter the team's GitHub Personal Access Token to access the full dashboard.",
+    team_login:'Login',
+    team_token_note:'The token is stored only in your browser (localStorage) and is never transmitted to others.',
+    team_invalid:'Invalid token. Must start with "ghp_" or "github_pat_".',
+    team_expired:'Invalid or expired token.',
+    dash_title:'Team overview', dash_refresh:'↻ Refresh', dash_updated:'Updated:',
+    ds_total:'Total', ds_open:'Open', ds_wip:'In progress', ds_closed:'Resolved',
+    dash_chart_cat:'By category', dash_chart_daily:'Daily — last 30 days',
+    issues_title:'Reports', search_ph:'Search…',
+    fc_all:'All', fc_open:'Open', fc_wip:'In progress', fc_closed:'Resolved', fc_critical:'Critical',
+    th_num:'#', th_report:'Report', th_cat:'Category', th_priority:'Priority',
+    th_status:'Status', th_date:'Date', th_actions:'Actions',
+    no_results:'No reports found.', loading:'Loading…',
+    state_open:'● Open', state_wip:'⚙ In progress', state_closed:'✓ Resolved',
+    act_wip:'⚙ In progress', act_resolve:'✓ Resolve', act_reopen:'↩ Reopen',
+    team_logout:'Logout →',
+    footer_powered:'Powered by GitHub Issues + Cloudflare Workers', footer_status:'← Status page',
+    detected:'Detected:', locale:'en-GB',
+    cat_label:{ bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Content', payment:'💳 Payment', feature:'💡 Feature', security:'🔒 Security', other:'🔧 Other' },
+    sev_label:{ low:'🟢 Low', medium:'🟡 Medium', high:'🟠 High', critical:'🔴 Critical' },
+    ib_cat:'Category', ib_pri:'Priority', ib_from:'Submitted by', ib_anon:'Anonymous',
+    ib_desc:'Description', ib_url:'URL', ib_browser:'Browser / Device', ib_via:'via reports.luxhaven360.com',
+    cat_display:{ bug:'Bug', performance:'Performance', content:'Content', payment:'Payment', feature:'Feature', security:'Security', other:'Other' },
+  },
+  fr: {
+    nav_status:'Statut', nav_reports:'Signalements',
+    hero_eyebrow:'Centre de signalement',
+    hero_title:'Signaler un <em>problème</em>',
+    hero_desc:"Vous avez remarqué quelque chose d'anormal\u00a0? Le formulaire ci-dessous contacte directement notre équipe. Chaque signalement est traité en quelques heures.",
+    tab_report:'Envoyer un signalement', tab_stats:'Statistiques', tab_team:"Dashboard Équipe",
+    label_name:'Votre nom', ph_name:'Prénom Nom',
+    label_email:'Email', label_optional:'(optionnel)',
+    hint_email:'Uniquement si vous souhaitez recevoir des mises à jour sur votre signalement.',
+    label_category:'Catégorie du problème', cat_ph:'Sélectionner une catégorie…',
+    cat_bug:'🐞 Bug / Erreur du site', cat_perf:'⚡ Lenteur / Performance',
+    cat_content:'📄 Contenu incorrect ou manquant', cat_payment:'💳 Problème paiement / Réservation',
+    cat_feature:'💡 Demande de fonctionnalité', cat_security:'🔒 Problème de sécurité', cat_other:'🔧 Autre',
+    label_priority:'Priorité / Impact',
+    sev_low:'🟢 Faible', sev_medium:'🟡 Moyen', sev_high:'🟠 Élevé', sev_critical:'🔴 Critique',
+    label_title:'Titre du problème *', ph_title:'Décrivez brièvement le problème…',
+    label_desc:'Description détaillée *',
+    ph_desc:"Décrivez ce qui s'est passé, comment reproduire le problème, sur quelle page/section il s'est produit…",
+    label_url:'URL de la page', ph_url:'https://luxhaven360.com/page',
+    label_browser:'Navigateur / Appareil', ph_browser:'ex. Chrome 120 · macOS',
+    btn_submit:'Envoyer le signalement', btn_sending:'Envoi en cours…',
+    err_required:'Champ obligatoire', err_maxchars:'Maximum 200 caractères',
+    err_ratelimit:"Trop de signalements en peu de temps. Réessayez dans une minute.",
+    err_network:"Impossible d'envoyer le signalement. Réessayez dans quelques instants.",
+    success_title:'Signalement reçu',
+    success_body:"Merci\u00a0! Votre rapport a été envoyé avec succès à l'équipe LuxHaven360.<br>Vous pouvez vérifier l'état des services sur <a href='https://status.luxhaven360.com' style='color:var(--gold)'>status.luxhaven360.com</a>",
+    success_new:'Envoyer un autre signalement →',
+    stats_title:'Statistiques publiques', stats_updated:'Mis à jour\u00a0:', stats_cache:'(cache)',
+    stats_err:'Erreur lors du chargement', stats_na:'Données pas encore disponibles',
+    sl_total:'Total', sl_open:'Ouverts', sl_wip:'En cours', sl_resolved:'Résolus',
+    pub_chart_cat:'Signalements par catégorie', pub_chart_daily:'Signalements — 30 derniers jours',
+    stats_note:'Les données affichent des signalements agrégés sans informations personnelles. Mise à jour automatique toutes les 5 minutes.',
+    team_gate_title:"Accès équipe",
+    team_gate_text:"Entrez le Personal Access Token GitHub de l'équipe pour accéder au tableau de bord complet.",
+    team_login:'Connexion',
+    team_token_note:"Le token est stocké uniquement dans votre navigateur (localStorage) et n'est jamais transmis à des tiers.",
+    team_invalid:'Token invalide. Doit commencer par "ghp_" ou "github_pat_".',
+    team_expired:'Token invalide ou expiré.',
+    dash_title:"Vue d'ensemble équipe", dash_refresh:'↻ Actualiser', dash_updated:'Mis à jour\u00a0:',
+    ds_total:'Total', ds_open:'Ouverts', ds_wip:'En cours', ds_closed:'Résolus',
+    dash_chart_cat:'Par catégorie', dash_chart_daily:'Journalier — 30 derniers jours',
+    issues_title:'Signalements', search_ph:'Rechercher…',
+    fc_all:'Tous', fc_open:'Ouverts', fc_wip:'En cours', fc_closed:'Résolus', fc_critical:'Critiques',
+    th_num:'#', th_report:'Signalement', th_cat:'Catégorie', th_priority:'Priorité',
+    th_status:'Statut', th_date:'Date', th_actions:'Actions',
+    no_results:'Aucun signalement trouvé.', loading:'Chargement…',
+    state_open:'● Ouvert', state_wip:'⚙ En cours', state_closed:'✓ Résolu',
+    act_wip:'⚙ En cours', act_resolve:'✓ Résoudre', act_reopen:'↩ Rouvrir',
+    team_logout:'Déconnexion →',
+    footer_powered:'Propulsé par GitHub Issues + Cloudflare Workers', footer_status:'← Page statut',
+    detected:'Détecté\u00a0:', locale:'fr-FR',
+    cat_label:{ bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Contenu', payment:'💳 Paiement', feature:'💡 Fonctionnalité', security:'🔒 Sécurité', other:'🔧 Autre' },
+    sev_label:{ low:'🟢 Faible', medium:'🟡 Moyen', high:'🟠 Élevé', critical:'🔴 Critique' },
+    ib_cat:'Catégorie', ib_pri:'Priorité', ib_from:'Envoyé par', ib_anon:'Anonyme',
+    ib_desc:'Description', ib_url:'URL', ib_browser:'Navigateur / Appareil', ib_via:'via reports.luxhaven360.com',
+    cat_display:{ bug:'Bug', performance:'Performance', content:'Contenu', payment:'Paiement', feature:'Fonctionnalité', security:'Sécurité', other:'Autre' },
+  },
+  de: {
+    nav_status:'Status', nav_reports:'Meldungen',
+    hero_eyebrow:'Meldungszentrum',
+    hero_title:'Problem <em>melden</em>',
+    hero_desc:'Haben Sie etwas Ungewöhnliches bemerkt? Das Formular unten erreicht unser Team direkt. Jede Meldung wird innerhalb weniger Stunden bearbeitet.',
+    tab_report:'Meldung einreichen', tab_stats:'Statistiken', tab_team:'Team-Dashboard',
+    label_name:'Ihr Name', ph_name:'Vorname Nachname',
+    label_email:'E-Mail', label_optional:'(optional)',
+    hint_email:'Nur wenn Sie Updates zu Ihrer Meldung erhalten möchten.',
+    label_category:'Problemkategorie', cat_ph:'Kategorie auswählen…',
+    cat_bug:'🐞 Bug / Website-Fehler', cat_perf:'⚡ Langsamkeit / Performance',
+    cat_content:'📄 Falscher oder fehlender Inhalt', cat_payment:'💳 Zahlungs- / Buchungsproblem',
+    cat_feature:'💡 Funktionsanfrage', cat_security:'🔒 Sicherheitsproblem', cat_other:'🔧 Sonstiges',
+    label_priority:'Priorität / Auswirkung',
+    sev_low:'🟢 Niedrig', sev_medium:'🟡 Mittel', sev_high:'🟠 Hoch', sev_critical:'🔴 Kritisch',
+    label_title:'Problemtitel *', ph_title:'Beschreiben Sie das Problem kurz…',
+    label_desc:'Ausführliche Beschreibung *',
+    ph_desc:'Beschreiben Sie, was passiert ist, wie das Problem reproduziert werden kann und auf welcher Seite es aufgetreten ist…',
+    label_url:'Seiten-URL', ph_url:'https://luxhaven360.com/seite',
+    label_browser:'Browser / Gerät', ph_browser:'z.B. Chrome 120 · macOS',
+    btn_submit:'Meldung einreichen', btn_sending:'Wird gesendet…',
+    err_required:'Pflichtfeld', err_maxchars:'Maximal 200 Zeichen',
+    err_ratelimit:'Zu viele Meldungen in kurzer Zeit. Bitte warten Sie eine Minute.',
+    err_network:'Meldung konnte nicht gesendet werden. Bitte erneut versuchen.',
+    success_title:'Meldung eingegangen',
+    success_body:'Danke! Ihre Meldung wurde erfolgreich an das LuxHaven360-Team gesendet.<br>Den Servicestatus können Sie unter <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a> einsehen.',
+    success_new:'Weitere Meldung einreichen →',
+    stats_title:'Öffentliche Statistiken', stats_updated:'Aktualisiert:', stats_cache:'(Cache)',
+    stats_err:'Fehler beim Laden der Daten', stats_na:'Daten noch nicht verfügbar',
+    sl_total:'Gesamt', sl_open:'Offen', sl_wip:'In Bearbeitung', sl_resolved:'Behoben',
+    pub_chart_cat:'Meldungen nach Kategorie', pub_chart_daily:'Meldungen — letzte 30 Tage',
+    stats_note:'Die Daten zeigen aggregierte Meldungen ohne persönliche Informationen. Automatische Aktualisierung alle 5 Minuten.',
+    team_gate_title:'Team-Zugang',
+    team_gate_text:'Geben Sie das GitHub Personal Access Token des Teams ein, um auf das vollständige Dashboard zuzugreifen.',
+    team_login:'Anmelden',
+    team_token_note:'Das Token wird nur in Ihrem Browser (localStorage) gespeichert und niemals an Dritte übertragen.',
+    team_invalid:'Ungültiges Token. Muss mit "ghp_" oder "github_pat_" beginnen.',
+    team_expired:'Ungültiges oder abgelaufenes Token.',
+    dash_title:'Team-Übersicht', dash_refresh:'↻ Aktualisieren', dash_updated:'Aktualisiert:',
+    ds_total:'Gesamt', ds_open:'Offen', ds_wip:'In Bearbeitung', ds_closed:'Behoben',
+    dash_chart_cat:'Nach Kategorie', dash_chart_daily:'Täglich — letzte 30 Tage',
+    issues_title:'Meldungen', search_ph:'Suchen…',
+    fc_all:'Alle', fc_open:'Offen', fc_wip:'In Bearbeitung', fc_closed:'Behoben', fc_critical:'Kritisch',
+    th_num:'#', th_report:'Meldung', th_cat:'Kategorie', th_priority:'Priorität',
+    th_status:'Status', th_date:'Datum', th_actions:'Aktionen',
+    no_results:'Keine Meldungen gefunden.', loading:'Laden…',
+    state_open:'● Offen', state_wip:'⚙ In Bearbeitung', state_closed:'✓ Behoben',
+    act_wip:'⚙ In Bearbeitung', act_resolve:'✓ Beheben', act_reopen:'↩ Erneut öffnen',
+    team_logout:'Abmelden →',
+    footer_powered:'Betrieben von GitHub Issues + Cloudflare Workers', footer_status:'← Statusseite',
+    detected:'Erkannt:', locale:'de-DE',
+    cat_label:{ bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Inhalt', payment:'💳 Zahlung', feature:'💡 Funktion', security:'🔒 Sicherheit', other:'🔧 Sonstiges' },
+    sev_label:{ low:'🟢 Niedrig', medium:'🟡 Mittel', high:'🟠 Hoch', critical:'🔴 Kritisch' },
+    ib_cat:'Kategorie', ib_pri:'Priorität', ib_from:'Eingereicht von', ib_anon:'Anonym',
+    ib_desc:'Beschreibung', ib_url:'URL', ib_browser:'Browser / Gerät', ib_via:'über reports.luxhaven360.com',
+    cat_display:{ bug:'Bug', performance:'Performance', content:'Inhalt', payment:'Zahlung', feature:'Funktion', security:'Sicherheit', other:'Sonstiges' },
+  },
+  es: {
+    nav_status:'Estado', nav_reports:'Reportes',
+    hero_eyebrow:'Centro de reportes',
+    hero_title:'Reportar un <em>problema</em>',
+    hero_desc:'¿Has notado algo que no funciona? El formulario de abajo llega directamente a nuestro equipo. Cada reporte se atiende en pocas horas.',
+    tab_report:'Enviar reporte', tab_stats:'Estadísticas', tab_team:'Panel de equipo',
+    label_name:'Tu nombre', ph_name:'Nombre Apellido',
+    label_email:'Email', label_optional:'(opcional)',
+    hint_email:'Solo si quieres recibir actualizaciones sobre tu reporte.',
+    label_category:'Categoría del problema', cat_ph:'Seleccionar una categoría…',
+    cat_bug:'🐞 Bug / Error del sitio', cat_perf:'⚡ Lentitud / Rendimiento',
+    cat_content:'📄 Contenido incorrecto o faltante', cat_payment:'💳 Problema de pago / Reserva',
+    cat_feature:'💡 Solicitud de funcionalidad', cat_security:'🔒 Problema de seguridad', cat_other:'🔧 Otro',
+    label_priority:'Prioridad / Impacto',
+    sev_low:'🟢 Bajo', sev_medium:'🟡 Medio', sev_high:'🟠 Alto', sev_critical:'🔴 Crítico',
+    label_title:'Título del problema *', ph_title:'Describe brevemente el problema…',
+    label_desc:'Descripción detallada *',
+    ph_desc:'Describe qué ocurrió, cómo reproducir el problema, en qué página/sección se produjo…',
+    label_url:'URL de la página', ph_url:'https://luxhaven360.com/pagina',
+    label_browser:'Navegador / Dispositivo', ph_browser:'ej. Chrome 120 · macOS',
+    btn_submit:'Enviar reporte', btn_sending:'Enviando…',
+    err_required:'Campo obligatorio', err_maxchars:'Máximo 200 caracteres',
+    err_ratelimit:'Demasiados reportes en poco tiempo. Inténtalo de nuevo en un minuto.',
+    err_network:'No se puede enviar el reporte. Inténtalo de nuevo en unos instantes.',
+    success_title:'Reporte recibido',
+    success_body:'¡Gracias! Tu reporte fue enviado exitosamente al equipo de LuxHaven360.<br>Puedes verificar el estado de los servicios en <a href="https://status.luxhaven360.com" style="color:var(--gold)">status.luxhaven360.com</a>',
+    success_new:'Enviar otro reporte →',
+    stats_title:'Estadísticas públicas', stats_updated:'Actualizado:', stats_cache:'(caché)',
+    stats_err:'Error al cargar los datos', stats_na:'Datos aún no disponibles',
+    sl_total:'Total', sl_open:'Abiertos', sl_wip:'En proceso', sl_resolved:'Resueltos',
+    pub_chart_cat:'Reportes por categoría', pub_chart_daily:'Reportes — últimos 30 días',
+    stats_note:'Los datos muestran reportes agregados sin información personal. Actualización automática cada 5 minutos.',
+    team_gate_title:'Acceso de equipo',
+    team_gate_text:'Introduce el Personal Access Token de GitHub del equipo para acceder al panel completo.',
+    team_login:'Acceder',
+    team_token_note:'El token se guarda solo en tu navegador (localStorage) y nunca se transmite a terceros.',
+    team_invalid:'Token inválido. Debe comenzar con "ghp_" o "github_pat_".',
+    team_expired:'Token inválido o vencido.',
+    dash_title:'Vista general del equipo', dash_refresh:'↻ Actualizar', dash_updated:'Actualizado:',
+    ds_total:'Total', ds_open:'Abiertos', ds_wip:'En proceso', ds_closed:'Resueltos',
+    dash_chart_cat:'Por categoría', dash_chart_daily:'Diario — últimos 30 días',
+    issues_title:'Reportes', search_ph:'Buscar…',
+    fc_all:'Todos', fc_open:'Abiertos', fc_wip:'En proceso', fc_closed:'Resueltos', fc_critical:'Críticos',
+    th_num:'#', th_report:'Reporte', th_cat:'Categoría', th_priority:'Prioridad',
+    th_status:'Estado', th_date:'Fecha', th_actions:'Acciones',
+    no_results:'No se encontraron reportes.', loading:'Cargando…',
+    state_open:'● Abierto', state_wip:'⚙ En proceso', state_closed:'✓ Resuelto',
+    act_wip:'⚙ En proceso', act_resolve:'✓ Resolver', act_reopen:'↩ Reabrir',
+    team_logout:'Cerrar sesión →',
+    footer_powered:'Impulsado por GitHub Issues + Cloudflare Workers', footer_status:'← Página de estado',
+    detected:'Detectado:', locale:'es-ES',
+    cat_label:{ bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Contenido', payment:'💳 Pago', feature:'💡 Funcionalidad', security:'🔒 Seguridad', other:'🔧 Otro' },
+    sev_label:{ low:'🟢 Bajo', medium:'🟡 Medio', high:'🟠 Alto', critical:'🔴 Crítico' },
+    ib_cat:'Categoría', ib_pri:'Prioridad', ib_from:'Enviado por', ib_anon:'Anónimo',
+    ib_desc:'Descripción', ib_url:'URL', ib_browser:'Navegador / Dispositivo', ib_via:'via reports.luxhaven360.com',
+    cat_display:{ bug:'Bug', performance:'Performance', content:'Contenido', payment:'Pago', feature:'Funcionalidad', security:'Seguridad', other:'Otro' },
+  },
+};
+
+let currentLang = (() => {
+  try { return localStorage.getItem('lh360_lang') || 'it'; } catch { return 'it'; }
+})();
+
+function t(key) {
+  const d = LANG[currentLang] || LANG.it;
+  return d[key] ?? LANG.it[key] ?? key;
+}
+function setEl(id, v, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (html) el.innerHTML = v; else el.textContent = v;
+}
+function setPH(id, v) {
+  const el = document.getElementById(id);
+  if (el) el.placeholder = v;
+}
+
+function applyTranslations() {
+  document.documentElement.lang = currentLang;
+  setEl('nav-status',  t('nav_status'));
+  setEl('nav-reports', t('nav_reports'));
+  setEl('hero-eyebrow', t('hero_eyebrow'));
+  setEl('hero-title',   t('hero_title'), true);
+  setEl('hero-desc',    t('hero_desc'));
+  setEl('tab-btn-report', t('tab_report'));
+  setEl('tab-btn-stats',  t('tab_stats'));
+  const tb = document.getElementById('tab-btn-team');
+  if (tb) tb.innerHTML = `${t('tab_team')} <span class="tab-badge"></span>`;
+  // Form
+  setEl('label-name', t('label_name'));
+  setEl('label-email', `${t('label_email')} <span id="label-optional" style="color:var(--text-dim);font-size:0.8em">${t('label_optional')}</span>`, true);
+  setEl('hint-email',     t('hint_email'));
+  setEl('label-category', t('label_category'));
+  setEl('label-priority', t('label_priority'));
+  setEl('label-title',    t('label_title'));
+  setEl('label-description', t('label_desc'));
+  setEl('label-url',     `${t('label_url')} <span style="color:var(--text-dim);font-size:0.8em">${t('label_optional')}</span>`, true);
+  setEl('label-browser', `${t('label_browser')} <span style="color:var(--text-dim);font-size:0.8em">${t('label_optional')}</span>`, true);
+  setPH('name',        t('ph_name'));
+  setPH('title',       t('ph_title'));
+  setPH('description', t('ph_desc'));
+  setPH('url-field',   t('ph_url'));
+  setPH('browser',     t('ph_browser'));
+  setPH('search-input', t('search_ph'));
+  // Select options
+  setEl('cat-placeholder',  t('cat_ph'));
+  setEl('cat-bug',          t('cat_bug'));
+  setEl('cat-performance',  t('cat_perf'));
+  setEl('cat-content',      t('cat_content'));
+  setEl('cat-payment',      t('cat_payment'));
+  setEl('cat-feature',      t('cat_feature'));
+  setEl('cat-security',     t('cat_security'));
+  setEl('cat-other',        t('cat_other'));
+  // Severity
+  setEl('sev-low',      t('sev_low'));
+  setEl('sev-medium',   t('sev_medium'));
+  setEl('sev-high',     t('sev_high'));
+  setEl('sev-critical', t('sev_critical'));
+  // Submit button (don't overwrite while loading)
+  const btnText = document.getElementById('btn-text');
+  if (btnText && !document.getElementById('btn-submit').classList.contains('loading'))
+    btnText.textContent = t('btn_submit');
+  // Success
+  setEl('success-title',    t('success_title'));
+  setEl('success-text-body', t('success_body'), true);
+  setEl('success-new-report', t('success_new'));
+  // Stats
+  setEl('stats-title',         t('stats_title'));
+  setEl('pub-chart-cat-title', t('pub_chart_cat'));
+  setEl('pub-chart-daily-title', t('pub_chart_daily'));
+  setEl('stats-footer-note',   t('stats_note'));
+  setEl('sl-total',    t('sl_total'));
+  setEl('sl-open',     t('sl_open'));
+  setEl('sl-wip',      t('sl_wip'));
+  setEl('sl-resolved', t('sl_resolved'));
+  // Team gate
+  setEl('team-gate-title', t('team_gate_title'));
+  setEl('team-gate-text',  t('team_gate_text'));
+  setEl('team-login-btn',  t('team_login'));
+  setEl('team-token-note', t('team_token_note'));
+  // Dashboard
+  setEl('dash-overview-title', t('dash_title'));
+  setEl('dash-refresh-btn',    t('dash_refresh'));
+  setEl('ds-total',  t('ds_total'));
+  setEl('ds-open',   t('ds_open'));
+  setEl('ds-wip',    t('ds_wip'));
+  setEl('ds-closed', t('ds_closed'));
+  setEl('dash-chart-cat-title',   t('dash_chart_cat'));
+  setEl('dash-chart-daily-title', t('dash_chart_daily'));
+  setEl('issues-title', t('issues_title'));
+  setEl('fc-all',      t('fc_all'));
+  setEl('fc-open',     t('fc_open'));
+  setEl('fc-wip',      t('fc_wip'));
+  setEl('fc-closed',   t('fc_closed'));
+  setEl('fc-critical', t('fc_critical'));
+  setEl('th-num',      t('th_num'));
+  setEl('th-report',   t('th_report'));
+  setEl('th-cat',      t('th_cat'));
+  setEl('th-priority', t('th_priority'));
+  setEl('th-status',   t('th_status'));
+  setEl('th-date',     t('th_date'));
+  setEl('th-actions',  t('th_actions'));
+  setEl('team-logout-btn', t('team_logout'));
+  setEl('footer-powered',      t('footer_powered'));
+  setEl('footer-status-link',  t('footer_status'));
+  // Lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === currentLang));
+  // Re-render open issues table if data exists
+  if (allIssues.length) renderIssues(currentPage);
+  if (pubStatsCache) renderPublicStats(pubStatsCache);
+}
+
+function setLanguage(lang) {
+  if (!LANG[lang]) return;
+  currentLang = lang;
+  try { localStorage.setItem('lh360_lang', lang); } catch {}
+  applyTranslations();
+}
+
+document.getElementById('lang-switcher').addEventListener('click', e => {
+  const btn = e.target.closest('.lang-btn');
+  if (btn) setLanguage(btn.dataset.lang);
+});
+
+/* ── Team mode ── */
 const IS_TEAM_MODE = window.location.search.includes('team');
 if (IS_TEAM_MODE) {
   const tabsContainer = document.getElementById('tabs-container');
   const teamBtn = document.createElement('button');
   teamBtn.className = 'tab-btn';
+  teamBtn.id = 'tab-btn-team';
   teamBtn.dataset.tab = 'team';
-  teamBtn.innerHTML = 'Dashboard Team <span class="tab-badge"></span>';
+  teamBtn.innerHTML = `${t('tab_team')} <span class="tab-badge"></span>`;
   tabsContainer.appendChild(teamBtn);
 }
 
-// ── Tab switching ─────────────────────────────────────────────
+/* ── Tab switching ── */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const tab = btn.dataset.tab;
@@ -614,15 +987,12 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// Stats tab: carica solo quando l'utente clicca sul tab (non su DOMContentLoaded)
-// Questo evita il CORS error che si verificava ad ogni apertura della pagina
-
-// ── Auto-detect browser ───────────────────────────────────────
+/* ── Auto-detect browser ── */
 (function detectBrowser() {
   const ua = navigator.userAgent;
   let name = 'Browser';
-  if (/Firefox/i.test(ua))     name = 'Firefox';
-  else if (/Edg/i.test(ua))    name = 'Edge';
+  if (/Firefox/i.test(ua)) name = 'Firefox';
+  else if (/Edg/i.test(ua)) name = 'Edge';
   else if (/Chrome/i.test(ua)) name = 'Chrome';
   else if (/Safari/i.test(ua)) name = 'Safari';
   const os = /iPhone|iPad/i.test(ua) ? 'iOS' : /Mac/i.test(ua) ? 'macOS' : /Windows/i.test(ua) ? 'Windows' : /Android/i.test(ua) ? 'Android' : 'OS';
@@ -630,18 +1000,18 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   const field = document.getElementById('browser');
   if (field && !field.value) field.placeholder = detected;
   const hint = document.getElementById('auto-browser-hint');
-  if (hint) hint.textContent = `Rilevato: ${detected}`;
+  if (hint) hint.textContent = `${t('detected')} ${detected}`;
 })();
 
-// ── Character counters ────────────────────────────────────────
+/* ── Character counters ── */
 function setupCounter(fieldId, counterId, max) {
-  const field   = document.getElementById(fieldId);
+  const field = document.getElementById(fieldId);
   const counter = document.getElementById(counterId);
   if (!field || !counter) return;
   const update = () => {
     const len = field.value.length;
     counter.textContent = `${len} / ${max}`;
-    counter.className = 'char-counter' + (len > max * 0.9 ? ' warn' : '') + (len >= max ? ' over' : '');
+    counter.className = 'char-counter' + (len > max*0.9 ? ' warn' : '') + (len >= max ? ' over' : '');
   };
   field.addEventListener('input', update);
   update();
@@ -649,7 +1019,7 @@ function setupCounter(fieldId, counterId, max) {
 setupCounter('title', 'title-counter', 200);
 setupCounter('description', 'desc-counter', 3000);
 
-// ── Severity pills ────────────────────────────────────────────
+/* ── Severity pills ── */
 let selectedSeverity = 'low';
 document.querySelectorAll('.severity-pill').forEach(pill => {
   pill.addEventListener('click', () => {
@@ -659,7 +1029,7 @@ document.querySelectorAll('.severity-pill').forEach(pill => {
   });
 });
 
-// ── Reset form ────────────────────────────────────────────────
+/* ── Reset form ── */
 document.getElementById('success-new-report')?.addEventListener('click', () => {
   document.getElementById('form-success').classList.remove('show');
   document.getElementById('form-wrap').style.display = 'block';
@@ -676,13 +1046,12 @@ document.getElementById('success-new-report')?.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ── Form submit ───────────────────────────────────────────────
+/* ── Form submit ── */
 document.getElementById('btn-submit').addEventListener('click', submitReport);
 
 async function submitReport() {
   const btn = document.getElementById('btn-submit');
   clearFormErrors();
-
   const name     = document.getElementById('name').value.trim();
   const email    = document.getElementById('email').value.trim();
   const category = document.getElementById('category').value;
@@ -693,61 +1062,49 @@ async function submitReport() {
   const hp       = document.getElementById('_hp').value;
 
   let valid = true;
-  if (!title) { showFieldError('title-error', 'Campo obbligatorio'); valid = false; }
-  if (!desc)  { showFieldError('desc-error',  'Campo obbligatorio'); valid = false; }
-  if (title.length > 200) { showFieldError('title-error', 'Massimo 200 caratteri'); valid = false; }
+  if (!title) { showFieldError('title-error', t('err_required')); valid = false; }
+  if (!desc)  { showFieldError('desc-error',  t('err_required')); valid = false; }
+  if (title.length > 200) { showFieldError('title-error', t('err_maxchars')); valid = false; }
   if (!valid) return;
 
-  const catLabels = { bug:'🐞 Bug', performance:'⚡ Performance', content:'📄 Contenuto', payment:'💳 Pagamento', feature:'💡 Funzionalità', security:'🔒 Sicurezza', other:'🔧 Altro' };
-  const sevLabels = { low:'🟢 Basso', medium:'🟡 Medio', high:'🟠 Alto', critical:'🔴 Critico' };
-
+  const catLabels = t('cat_label');
+  const sevLabels = t('sev_label');
   const issueTitle = `[${catLabels[category] || 'Report'}] ${title}`;
-  const issueBody  = `## 📋 Segnalazione\n\n**Categoria:** ${catLabels[category] || '—'}\n**Priorità:** ${sevLabels[selectedSeverity]}\n**Inviata da:** ${name || 'Anonimo'}${email ? ` (${email})` : ''}\n\n---\n\n### Descrizione\n${desc}\n${url ? `\n### URL\n${url}` : ''}\n${browser ? `\n### Browser / Dispositivo\n${browser}` : ''}\n\n---\n*Inviata il ${new Date().toLocaleString('it-IT')} tramite reports.luxhaven360.com*`;
+  const issueBody  = `## 📋 ${t('ib_desc')}\n\n**${t('ib_cat')}:** ${catLabels[category] || '—'}\n**${t('ib_pri')}:** ${sevLabels[selectedSeverity]}\n**${t('ib_from')}:** ${name || t('ib_anon')}${email ? ` (${email})` : ''}\n\n---\n\n### ${t('ib_desc')}\n${desc}${url ? `\n\n### ${t('ib_url')}\n${url}` : ''}${browser ? `\n\n### ${t('ib_browser')}\n${browser}` : ''}\n\n---\n*${new Date().toLocaleString(t('locale'))} ${t('ib_via')}*`;
 
   btn.classList.add('loading');
   btn.disabled = true;
-  document.getElementById('btn-text').textContent = 'Invio in corso…';
+  document.getElementById('btn-text').textContent = t('btn_sending');
 
   try {
     const res = await fetch(`${CFG.workerUrl}/create-issue`, {
-      method:  'POST',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        title: issueTitle, body: issueBody,
-        labels: [category || 'other', selectedSeverity],
-        _hp: hp,
-      }),
+      body: JSON.stringify({ title: issueTitle, body: issueBody, labels: [category || 'other', selectedSeverity], _hp: hp }),
     });
-
-    if (res.status === 429) {
-      showFormError('Troppe segnalazioni in poco tempo. Riprova tra un minuto.');
-      return;
-    }
+    if (res.status === 429) { showFormError(t('err_ratelimit')); return; }
     if (!res.ok) throw new Error(`${res.status}`);
-
     const data = await res.json();
     document.getElementById('form-wrap').style.display = 'none';
     document.getElementById('form-success').classList.add('show');
     const refEl = document.getElementById('success-issue-ref');
     if (data.issueNumber && !data.honeypot) {
-      refEl.textContent = `Segnalazione #${data.issueNumber}`;
+      refEl.textContent = `#${data.issueNumber}`;
     } else {
       refEl.style.display = 'none';
     }
-
   } catch (e) {
-    showFormError(`Impossibile inviare la segnalazione. (${e.message}) — Riprova tra qualche istante.`);
+    showFormError(`${t('err_network')} (${e.message})`);
   } finally {
     btn.classList.remove('loading');
     btn.disabled = false;
-    document.getElementById('btn-text').textContent = 'Invia segnalazione';
+    document.getElementById('btn-text').textContent = t('btn_submit');
   }
 }
 
 function showFormError(msg) {
   const el = document.getElementById('form-error');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   el.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 function showFieldError(id, msg) {
@@ -756,74 +1113,52 @@ function showFieldError(id, msg) {
 }
 function clearFormErrors() {
   document.getElementById('form-error').classList.remove('show');
-  ['title-error','desc-error'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = '';
-  });
+  ['title-error','desc-error'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  PUBLIC STATS
-// ═══════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════
+   PUBLIC STATS
+════════════════════════════════════════════════════════════ */
 let pubStatsCache = null;
 let pubStatsTs    = 0;
 let pubCatChart   = null;
 let pubDayChart   = null;
 
 async function loadPublicStats() {
-  // Usa cache se fresca
   if (pubStatsCache && (Date.now() - pubStatsTs < CFG.statsCacheTTL)) {
-    renderPublicStats(pubStatsCache);
-    return;
+    renderPublicStats(pubStatsCache); return;
   }
-
   try {
-    // Prova prima il Worker (cached 5min server-side).
-    // Se il Worker risponde con CORS error (403 da Cloudflare WAF o Bot Fight Mode),
-    // il fetch lancia eccezione → catch silenzioso → passa al fallback GitHub API.
     let stats;
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000); // 5s timeout
+      const timeout = setTimeout(() => controller.abort(), 5000);
       const r = await fetch(`${CFG.workerUrl}/public-stats`, { signal: controller.signal });
       clearTimeout(timeout);
       if (r.ok) stats = await r.json();
-    } catch {
-      // Worker non raggiungibile o CORS bloccato da Cloudflare WAF → usa fallback
-    }
-
-    // Fallback: GitHub API diretta (funziona sempre per repo pubblici, no CORS)
-    if (!stats) {
-      stats = await fetchPublicStatsFromGitHub();
-    }
-
+    } catch {}
+    if (!stats) stats = await fetchPublicStatsFromGitHub();
     if (stats) {
-      pubStatsCache = stats;
-      pubStatsTs    = Date.now();
+      pubStatsCache = stats; pubStatsTs = Date.now();
       renderPublicStats(stats);
     } else {
-      document.getElementById('stats-updated').textContent = 'Dati non ancora disponibili';
+      document.getElementById('stats-updated').textContent = t('stats_na');
     }
-  } catch (e) {
-    document.getElementById('stats-updated').textContent = 'Errore nel caricamento dei dati';
+  } catch {
+    document.getElementById('stats-updated').textContent = t('stats_err');
   }
 }
 
 async function fetchPublicStatsFromGitHub() {
   const base = `https://api.github.com/repos/${CFG.githubOwner}/${CFG.githubRepo}`;
   const hdrs = { Accept: 'application/vnd.github+json' };
-
-  // Esegui le due chiamate in parallelo; se entrambe falliscono (403 = repo privato
-  // o non esistente, 404 = non trovato), restituisci null silenziosamente.
   const [openR, closedR] = await Promise.all([
     fetch(`${base}/issues?state=open&per_page=100`, { headers: hdrs }),
     fetch(`${base}/issues?state=closed&per_page=100`, { headers: hdrs }),
   ]);
   if (!openR.ok) return null;
-
   const [openIssues, closedIssues] = await Promise.all([openR.json(), closedR.ok ? closedR.json() : []]);
   const all = [...openIssues, ...closedIssues];
-
   const byCategory = {}, byDay = {};
   all.forEach(i => {
     const cat = catFromLabels(i.labels?.map(l=>l.name.toLowerCase())||[]);
@@ -831,7 +1166,6 @@ async function fetchPublicStatsFromGitHub() {
     const day = i.created_at?.split('T')[0];
     if (day) byDay[day] = (byDay[day]||0)+1;
   });
-
   const wip = all.filter(i => i.labels?.some(l=>['wip','in-progress'].includes(l.name.toLowerCase()))).length;
   return {
     total: all.length,
@@ -842,101 +1176,74 @@ async function fetchPublicStatsFromGitHub() {
 }
 
 function catFromLabels(labels) {
-  if (labels.includes('bug'))         return 'Bug';
-  if (labels.includes('performance')) return 'Performance';
-  if (labels.includes('content'))     return 'Contenuto';
-  if (labels.includes('payment'))     return 'Pagamento';
-  if (labels.includes('feature'))     return 'Funzionalità';
-  if (labels.includes('security'))    return 'Sicurezza';
-  return 'Altro';
+  const d = LANG[currentLang]?.cat_display || LANG.it.cat_display;
+  if (labels.includes('bug'))         return d.bug;
+  if (labels.includes('performance')) return d.performance;
+  if (labels.includes('content'))     return d.content;
+  if (labels.includes('payment'))     return d.payment;
+  if (labels.includes('feature'))     return d.feature;
+  if (labels.includes('security'))    return d.security;
+  return d.other;
 }
 
 function renderPublicStats(stats) {
-  // Mini stats
   const grid = document.getElementById('pub-stats-grid');
   grid.innerHTML = `
-    <div class="mini-stat-card"><span class="mini-stat-value">${stats.total}</span><span class="mini-stat-label">Totale</span></div>
-    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--yellow)">${stats.open}</span><span class="mini-stat-label">Aperti</span></div>
-    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--blue)">${stats.wip}</span><span class="mini-stat-label">In lavorazione</span></div>
-    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--green)">${stats.resolved}</span><span class="mini-stat-label">Risolti</span></div>`;
+    <div class="mini-stat-card"><span class="mini-stat-value">${stats.total}</span><span class="mini-stat-label">${t('sl_total')}</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--yellow)">${stats.open}</span><span class="mini-stat-label">${t('sl_open')}</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--blue)">${stats.wip}</span><span class="mini-stat-label">${t('sl_wip')}</span></div>
+    <div class="mini-stat-card"><span class="mini-stat-value" style="color:var(--green)">${stats.resolved}</span><span class="mini-stat-label">${t('sl_resolved')}</span></div>`;
 
-  const upd = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleTimeString('it-IT') : '—';
-  document.getElementById('stats-updated').textContent = `Aggiornato: ${upd}${stats.cached ? ' (cache)' : ''}`;
+  const upd = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleTimeString(t('locale')) : '—';
+  document.getElementById('stats-updated').textContent = `${t('stats_updated')} ${upd}${stats.cached ? ` ${t('stats_cache')}` : ''}`;
 
-  // Colors
+  document.getElementById('pub-chart-cat-title').textContent  = t('pub_chart_cat');
+  document.getElementById('pub-chart-daily-title').textContent = t('pub_chart_daily');
+
   const GOLD='#C9A96E', DIM='rgba(232,226,217,0.12)';
   const COLORS=['#C9A96E','#D95B5B','#E8B84B','#5B9BD9','#4CAF7D','#C97BE8','#7BE8C9'];
-  const tpDefaults = {
-    backgroundColor:'#1a1a24',borderColor:'rgba(201,169,110,0.2)',borderWidth:1,
-    titleColor:GOLD,bodyColor:'rgba(232,226,217,0.7)',padding:10,
-  };
+  const tpDef = { backgroundColor:'#1a1a24', borderColor:'rgba(201,169,110,0.2)', borderWidth:1, titleColor:GOLD, bodyColor:'rgba(232,226,217,0.7)', padding:10 };
 
-  // Donut — categories
   const cats = stats.byCategory || {};
   if (pubCatChart) pubCatChart.destroy();
   pubCatChart = new Chart(document.getElementById('pubChartCategories'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(cats),
-      datasets: [{ data: Object.values(cats), backgroundColor: COLORS, borderWidth: 0 }],
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:{ ...tpDefaults } },
-    },
+    type:'doughnut',
+    data:{ labels:Object.keys(cats), datasets:[{ data:Object.values(cats), backgroundColor:COLORS, borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:{ ...tpDef } } },
   });
 
-  // Bar — daily last 30
-  const last30 = Array.from({ length:30 }, (_,i) => {
-    const d = new Date(); d.setDate(d.getDate() - (29-i));
-    return d.toISOString().split('T')[0];
-  });
-  const dailyCounts = last30.map(day => (stats.byDay || {})[day] || 0);
-
+  const last30 = Array.from({length:30},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(29-i)); return d.toISOString().split('T')[0]; });
+  const dailyCounts = last30.map(day => (stats.byDay||{})[day]||0);
   if (pubDayChart) pubDayChart.destroy();
   pubDayChart = new Chart(document.getElementById('pubChartDaily'), {
-    type: 'bar',
-    data: {
-      labels: last30.map(d => d.slice(5).replace('-', '/')),
-      datasets:[{ data:dailyCounts, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }],
-    },
-    options: {
+    type:'bar',
+    data:{ labels:last30.map(d=>d.slice(5).replace('-','/')), datasets:[{ data:dailyCounts, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
+    options:{
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{...tpDefaults} },
+      plugins:{ legend:{display:false}, tooltip:{...tpDef} },
       scales:{
-        x:{
-          ticks:{
-            color:'rgba(232,226,217,0.3)', font:{size:9},
-            maxRotation: 0, minRotation: 0, maxTicksLimit: 30, autoSkip: false,
-            callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
-              ? last30[i].slice(5).replace('-', '/') : '',
-          },
-          grid:{color:DIM}
-        },
+        x:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9}, maxRotation:0, minRotation:0, autoSkip:false, callback:(_,i)=>(i===0||i===last30.length-1||i%5===4)?last30[i].slice(5).replace('-','/'):'' }, grid:{color:DIM} },
         y:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9} }, grid:{color:DIM} },
       },
     },
   });
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  TEAM AUTH
-// ═══════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════
+   TEAM AUTH
+════════════════════════════════════════════════════════════ */
 function checkTeamAuth() {
   const token = localStorage.getItem('lh360_team_token');
   if (token) showDashboard(token);
 }
-
 function teamLogin() {
   const token = document.getElementById('team-token').value.trim();
   if (!token || !token.startsWith('gh')) {
-    document.getElementById('team-auth-error').textContent = 'Token non valido. Deve iniziare con "ghp_" o "github_pat_".';
-    return;
+    document.getElementById('team-auth-error').textContent = t('team_invalid'); return;
   }
   localStorage.setItem('lh360_team_token', token);
   showDashboard(token);
 }
-
 function teamLogout() {
   localStorage.removeItem('lh360_team_token');
   allIssues = [];
@@ -944,53 +1251,45 @@ function teamLogout() {
   document.getElementById('dashboard-content').style.display = 'none';
   document.getElementById('team-token').value = '';
 }
-
 function showDashboard(token) {
   document.getElementById('team-gate').style.display = 'none';
   document.getElementById('dashboard-content').style.display = 'block';
   loadDashboardData(token);
 }
-
 function refreshDashboard() {
-  const t = localStorage.getItem('lh360_team_token');
-  if (t) loadDashboardData(t);
+  const t2 = localStorage.getItem('lh360_team_token');
+  if (t2) loadDashboardData(t2);
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  TEAM DASHBOARD DATA
-// ═══════════════════════════════════════════════════════════════
+/* ── Team Dashboard Data ── */
 let allIssues    = [];
 let activeFilter = 'all';
-let searchQuery  = '';
 let currentPage  = 1;
 const perPage    = 15;
 let catChartInst = null;
 let dayChartInst = null;
 
 async function loadDashboardData(token) {
-  const t = token || localStorage.getItem('lh360_team_token');
-  if (!t) return;
-
+  const tok = token || localStorage.getItem('lh360_team_token');
+  if (!tok) return;
   try {
     const [openR, closedR] = await Promise.all([
-      githubFetch(`issues?state=open&per_page=100`, t),
-      githubFetch(`issues?state=closed&per_page=100`, t),
+      githubFetch('issues?state=open&per_page=100', tok),
+      githubFetch('issues?state=closed&per_page=100', tok),
     ]);
     allIssues = [...openR, ...closedR].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
     renderDashStats(allIssues);
     renderDashCharts(allIssues);
     filterAndRender();
-    document.getElementById('dash-updated').textContent = `Aggiornato: ${new Date().toLocaleTimeString('it-IT')}`;
-
+    document.getElementById('dash-updated').textContent = `${t('dash_updated')} ${new Date().toLocaleTimeString(t('locale'))}`;
   } catch (e) {
     if (e.message.includes('401') || e.message.includes('403')) {
       document.getElementById('dashboard-content').style.display = 'none';
       document.getElementById('team-gate').style.display = 'block';
-      document.getElementById('team-auth-error').textContent = 'Token non valido o scaduto.';
+      document.getElementById('team-auth-error').textContent = t('team_expired');
       localStorage.removeItem('lh360_team_token');
     } else {
-      document.getElementById('dash-updated').textContent = `Errore: ${e.message}`;
+      document.getElementById('dash-updated').textContent = `${t('dash_updated').replace(':','')} ⚠ ${e.message}`;
     }
   }
 }
@@ -1009,17 +1308,17 @@ function renderDashStats(issues) {
   const wip    = issues.filter(i => hasLabel(i,'wip') || hasLabel(i,'in-progress')).length;
   const closed = issues.filter(i => i.state==='closed').length;
   animateVal('s-total', issues.length);
-  animateVal('s-open', open);
-  animateVal('s-wip', wip);
+  animateVal('s-open',  open);
+  animateVal('s-wip',   wip);
   animateVal('s-closed', closed);
 }
 
 function animateVal(id, target) {
   const el = document.getElementById(id);
   let cur = parseInt(el.textContent) || 0;
-  const step = Math.max(1, Math.ceil(Math.abs(target - cur) / 20));
+  const step = Math.max(1, Math.ceil(Math.abs(target-cur)/20));
   const iv = setInterval(() => {
-    cur = cur < target ? Math.min(cur+step, target) : Math.max(cur-step, target);
+    cur = cur < target ? Math.min(cur+step,target) : Math.max(cur-step,target);
     el.textContent = cur;
     if (cur === target) clearInterval(iv);
   }, 25);
@@ -1029,44 +1328,27 @@ function renderDashCharts(issues) {
   const GOLD='#C9A96E', DIM='rgba(232,226,217,0.12)';
   const COLORS=['#C9A96E','#D95B5B','#E8B84B','#5B9BD9','#4CAF7D','#C97BE8','#7BE8C9'];
   const tp = { backgroundColor:'#1a1a24', borderColor:'rgba(201,169,110,0.2)', borderWidth:1, titleColor:GOLD, bodyColor:'rgba(232,226,217,0.7)', padding:10 };
-
   const catMap = {};
   issues.forEach(i => { const c = catFromLabels(i.labels?.map(l=>l.name.toLowerCase())||[]); catMap[c]=(catMap[c]||0)+1; });
-
+  document.getElementById('dash-chart-cat-title').textContent   = t('dash_chart_cat');
+  document.getElementById('dash-chart-daily-title').textContent = t('dash_chart_daily');
   if (catChartInst) catChartInst.destroy();
   catChartInst = new Chart(document.getElementById('chartCategories'), {
-    type: 'doughnut',
-    data: { labels:Object.keys(catMap), datasets:[{ data:Object.values(catMap), backgroundColor:COLORS, borderWidth:0 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:tp } },
+    type:'doughnut',
+    data:{ labels:Object.keys(catMap), datasets:[{ data:Object.values(catMap), backgroundColor:COLORS, borderWidth:0 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'right', labels:{ color:'rgba(232,226,217,0.5)', font:{size:10}, boxWidth:10 } }, tooltip:tp } },
   });
-
   const last30 = Array.from({length:30},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(29-i)); return d.toISOString().split('T')[0]; });
-  const daily  = last30.map(day => issues.filter(i => i.created_at?.startsWith(day)).length);
-
+  const daily  = last30.map(day => issues.filter(i=>i.created_at?.startsWith(day)).length);
   if (dayChartInst) dayChartInst.destroy();
   dayChartInst = new Chart(document.getElementById('chartDaily'), {
-    type: 'bar',
-    data: { labels:last30.map(d=>d.slice(5).replace('-','/')), datasets:[{ data:daily, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:tp },
-      scales:{
-        x:{
-          ticks:{
-            color:'rgba(232,226,217,0.3)', font:{size:9},
-            maxRotation: 0, minRotation: 0, maxTicksLimit: 30, autoSkip: false,
-            callback: (_, i) => (i === 0 || i === last30.length - 1 || i % 5 === 4)
-              ? last30[i].slice(5).replace('-','/') : '',
-          },
-          grid:{color:DIM}
-        },
-        y:{ticks:{color:'rgba(232,226,217,0.3)',font:{size:9}},grid:{color:DIM}}
-      }
-    },
+    type:'bar',
+    data:{ labels:last30.map(d=>d.slice(5).replace('-','/')), datasets:[{ data:daily, backgroundColor:'rgba(201,169,110,0.3)', borderColor:GOLD, borderWidth:1, borderRadius:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:tp }, scales:{ x:{ ticks:{ color:'rgba(232,226,217,0.3)', font:{size:9}, maxRotation:0, autoSkip:false, callback:(_,i)=>(i===0||i===last30.length-1||i%5===4)?last30[i].slice(5).replace('-','/'):'' }, grid:{color:DIM} }, y:{ ticks:{color:'rgba(232,226,217,0.3)',font:{size:9}}, grid:{color:DIM} } } },
   });
 }
 
-// Filters
+/* ── Filters ── */
 document.querySelectorAll('.filter-chip').forEach(chip => {
   chip.addEventListener('click', () => {
     document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
@@ -1078,56 +1360,45 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
 });
 
 function filterAndRender() {
-  searchQuery = document.getElementById('search-input')?.value.toLowerCase() || '';
+  const q = document.getElementById('search-input')?.value.toLowerCase() || '';
   currentPage = 1;
-  renderIssues(1);
+  renderIssues(1, q);
 }
 
-function renderIssues(page) {
+function renderIssues(page, searchQ) {
   currentPage = page;
+  const sq = searchQ !== undefined ? searchQ : (document.getElementById('search-input')?.value.toLowerCase() || '');
   let filtered = [...allIssues];
-
-  if (activeFilter === 'open')     filtered = filtered.filter(i => i.state==='open' && !hasLabel(i,'wip') && !hasLabel(i,'in-progress'));
-  if (activeFilter === 'wip')      filtered = filtered.filter(i => hasLabel(i,'wip') || hasLabel(i,'in-progress'));
-  if (activeFilter === 'closed')   filtered = filtered.filter(i => i.state==='closed');
-  if (activeFilter === 'critical') filtered = filtered.filter(i => hasLabel(i,'critical'));
-
-  if (searchQuery) {
-    filtered = filtered.filter(i => i.title?.toLowerCase().includes(searchQuery) || i.body?.toLowerCase().includes(searchQuery));
-  }
+  if (activeFilter==='open')     filtered=filtered.filter(i=>i.state==='open'&&!hasLabel(i,'wip')&&!hasLabel(i,'in-progress'));
+  if (activeFilter==='wip')      filtered=filtered.filter(i=>hasLabel(i,'wip')||hasLabel(i,'in-progress'));
+  if (activeFilter==='closed')   filtered=filtered.filter(i=>i.state==='closed');
+  if (activeFilter==='critical') filtered=filtered.filter(i=>hasLabel(i,'critical'));
+  if (sq) filtered=filtered.filter(i=>i.title?.toLowerCase().includes(sq)||i.body?.toLowerCase().includes(sq));
 
   const total  = filtered.length;
-  const pages  = Math.ceil(total / perPage);
+  const pages  = Math.ceil(total/perPage);
   const sliced = filtered.slice((page-1)*perPage, page*perPage);
 
   const tbody = document.getElementById('issues-body');
   if (!sliced.length) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem">Nessuna segnalazione trovata.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--text-dim);text-align:center;padding:2rem">${t('no_results')}</td></tr>`;
   } else {
     tbody.innerHTML = sliced.map(issue => {
-      const cat   = catFromLabels(issue.labels?.map(l=>l.name.toLowerCase())||[]);
+      const cat    = catFromLabels(issue.labels?.map(l=>l.name.toLowerCase())||[]);
       const catKey = getCatKey(issue);
-      const state = getState(issue);
+      const state  = getState(issue);
       const isOpen = issue.state === 'open';
       const isWip  = hasLabel(issue,'wip') || hasLabel(issue,'in-progress');
-
       const actions = `
         <div class="issue-actions">
-          ${!isWip && isOpen
-            ? `<button class="action-btn wip" onclick="updateStatus(${issue.number}, 'wip', this)">⚙ In lavorazione</button>` : ''}
-          ${isOpen
-            ? `<button class="action-btn resolve" onclick="updateStatus(${issue.number}, 'close', this)">✓ Risolvi</button>` : ''}
-          ${!isOpen
-            ? `<button class="action-btn reopen" onclick="updateStatus(${issue.number}, 'open', this)">↩ Riapri</button>` : ''}
+          ${!isWip&&isOpen?`<button class="action-btn wip" onclick="updateStatus(${issue.number},'wip',this)">${t('act_wip')}</button>`:''}
+          ${isOpen?`<button class="action-btn resolve" onclick="updateStatus(${issue.number},'close',this)">${t('act_resolve')}</button>`:''}
+          ${!isOpen?`<button class="action-btn reopen" onclick="updateStatus(${issue.number},'open',this)">${t('act_reopen')}</button>`:''}
         </div>`;
-
       return `
         <tr id="row-${issue.number}">
           <td><a href="${issue.html_url}" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none">#${issue.number}</a></td>
-          <td>
-            <div class="issue-title">${escHtml(issue.title)}</div>
-            <div style="font-size:0.68rem;color:var(--text-dim);margin-top:3px">${issue.user?.login ? '@'+issue.user.login : ''}</div>
-          </td>
+          <td><div class="issue-title">${escHtml(issue.title)}</div><div style="font-size:0.68rem;color:var(--text-dim);margin-top:3px">${issue.user?.login?'@'+issue.user.login:''}</div></td>
           <td><span class="label-badge cat-${catKey}">${cat}</span></td>
           <td>${getPriorityBadge(issue)}</td>
           <td><span class="status-badge ${state.cls}">${state.label}</span></td>
@@ -1137,89 +1408,65 @@ function renderIssues(page) {
     }).join('');
   }
 
-  // Pagination
   const pag = document.getElementById('pagination');
-  if (pages <= 1) { pag.innerHTML=''; return; }
-  pag.innerHTML = Array.from({length:pages},(_,i)=>i+1).map(n =>
+  if (pages<=1) { pag.innerHTML=''; return; }
+  pag.innerHTML = Array.from({length:pages},(_,i)=>i+1).map(n=>
     `<button class="page-btn ${n===page?'active':''}" onclick="renderIssues(${n})">${n}</button>`
   ).join('');
 }
 
-// ── Status updates ────────────────────────────────────────────
 async function updateStatus(issueNumber, action, btn) {
-  const token = localStorage.getItem('lh360_team_token');
-  if (!token) return;
-
+  const tok = localStorage.getItem('lh360_team_token');
+  if (!tok) return;
   btn.disabled = true;
-  const originalText = btn.textContent;
+  const orig = btn.textContent;
   btn.textContent = '…';
-
   try {
-    let body = { issueNumber, action, teamToken: token };
-
-    // Se azione wip → aggiunge label 'wip' senza chiudere
+    let body = { issueNumber, action, teamToken: tok };
     if (action === 'wip') {
-      const issue = allIssues.find(i => i.number === issueNumber);
-      const existingLabels = issue?.labels?.map(l => l.name) || [];
-      body = { issueNumber, action: 'label', labels: [...existingLabels.filter(l=>l!=='wip'), 'wip'], teamToken: token };
+      const issue = allIssues.find(i=>i.number===issueNumber);
+      const existingLabels = issue?.labels?.map(l=>l.name)||[];
+      body = { issueNumber, action:'label', labels:[...existingLabels.filter(l=>l!=='wip'),'wip'], teamToken:tok };
     }
-
     const res = await fetch(`${CFG.workerUrl}/update-issue`, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify(body),
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body),
     });
-
-    if (res.ok) {
-      // Reload dashboard
-      await loadDashboardData(token);
-    } else {
-      const err = await res.json();
-      alert(`Errore: ${err.error}`);
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }
-  } catch (e) {
-    alert(`Errore di rete: ${e.message}`);
-    btn.disabled = false;
-    btn.textContent = originalText;
-  }
+    if (res.ok) { await loadDashboardData(tok); }
+    else { const err = await res.json(); alert(`Error: ${err.error}`); btn.disabled=false; btn.textContent=orig; }
+  } catch(e) { alert(`Network error: ${e.message}`); btn.disabled=false; btn.textContent=orig; }
 }
 
-// ── Helpers ───────────────────────────────────────────────────
-function hasLabel(issue, name) {
-  return issue.labels?.some(l => l.name.toLowerCase().includes(name));
-}
-
+/* ── Helpers ── */
+function hasLabel(issue, name) { return issue.labels?.some(l=>l.name.toLowerCase().includes(name)); }
 function getState(issue) {
-  if (hasLabel(issue,'wip') || hasLabel(issue,'in-progress')) return { cls:'issue-wip', label:'⚙ In lavorazione' };
-  if (issue.state === 'closed') return { cls:'issue-closed', label:'✓ Risolto' };
-  return { cls:'issue-open', label:'● Aperto' };
+  if (hasLabel(issue,'wip')||hasLabel(issue,'in-progress')) return { cls:'issue-wip',    label:t('state_wip') };
+  if (issue.state==='closed')                               return { cls:'issue-closed', label:t('state_closed') };
+  return { cls:'issue-open', label:t('state_open') };
 }
-
 function getPriorityBadge(issue) {
-  if (hasLabel(issue,'critical')) return `<span style="color:var(--red);font-size:0.7rem">🔴 Critico</span>`;
-  if (hasLabel(issue,'high'))     return `<span style="color:var(--yellow);font-size:0.7rem">🟠 Alto</span>`;
-  if (hasLabel(issue,'medium'))   return `<span style="color:var(--gold);font-size:0.7rem">🟡 Medio</span>`;
-  return `<span style="color:var(--text-dim);font-size:0.7rem">🟢 Basso</span>`;
+  const d = t('sev_label');
+  if (hasLabel(issue,'critical')) return `<span style="color:var(--red);font-size:0.7rem">${d.critical}</span>`;
+  if (hasLabel(issue,'high'))     return `<span style="color:var(--yellow);font-size:0.7rem">${d.high}</span>`;
+  if (hasLabel(issue,'medium'))   return `<span style="color:var(--gold);font-size:0.7rem">${d.medium}</span>`;
+  return `<span style="color:var(--text-dim);font-size:0.7rem">${d.low}</span>`;
 }
-
 function getCatKey(issue) {
   const ls = issue.labels?.map(l=>l.name.toLowerCase())||[];
   for (const k of ['bug','performance','content','payment','feature','security']) if (ls.includes(k)) return k;
   return 'other';
 }
-
 function fmtShort(iso) {
   if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+  return new Date(iso).toLocaleDateString(t('locale'), { day:'2-digit', month:'short', year:'numeric' });
 }
-
 function escHtml(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Anno copyright automatico
+/* ════════════════════════════════════════════════════════════
+   START — apply translations on load
+════════════════════════════════════════════════════════════ */
+applyTranslations();
 document.getElementById('footer-year').textContent = new Date().getFullYear();
 </script>
 </body>
